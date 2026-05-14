@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react'
-import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth'
+/// <reference types="@types/google.maps" />
+import { useRef, useState, useEffect } from 'react'
+import { signInWithPopup, signOut, onAuthStateChanged, GoogleAuthProvider } from 'firebase/auth'
 import { collection, addDoc, getDocs, orderBy, query } from 'firebase/firestore'
 import { auth, googleProvider, db } from '../lib/firebase'
+import { pushToGoogleCalendar } from '../lib/calendar'
 import type { Event } from '../types'
 import './Admin.css'
 
-const ALLOWED_EMAIL = 'GatewayLocksport@gmail.com'
+const ALLOWED_EMAIL = 'gatewaylocksport@gmail.com'
 
 export default function Admin() {
   const [userEmail, setUserEmail] = useState<string | null>(null)
@@ -33,7 +35,10 @@ export default function Admin() {
   async function handleSignIn() {
     setAccessDenied(false)
     try {
-      await signInWithPopup(auth, googleProvider)
+      const result = await signInWithPopup(auth, googleProvider)
+      const credential = GoogleAuthProvider.credentialFromResult(result)
+      if (credential?.accessToken) {
+      }
     } catch (err) {
       console.error('Sign in error:', err)
     }
@@ -79,7 +84,10 @@ export default function Admin() {
 
   return (
     <div className="admin-page">
-      <AdminDashboard userEmail={userEmail} onSignOut={handleSignOut} />
+      <AdminDashboard
+        userEmail={userEmail}
+        onSignOut={handleSignOut}
+      />
     </div>
   )
 }
@@ -90,10 +98,10 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
   const [form, setForm] = useState({
     name: '',
     date: '',
-    time: '',
+    time: '18:00',
     location: '',
     mapsUrl: '',
-    description: ''
+    description: 'Eventdescriptionanddetailsgohere.'
   })
   const [submitting, setSubmitting] = useState(false)
   const [successMsg, setSuccessMsg] = useState('')
@@ -119,7 +127,7 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
     }
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement| HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value } = e.target
     setForm(prev => ({ ...prev, [name]: value }))
     if (name === 'location') {
@@ -157,8 +165,20 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
         emailSendDate
       })
 
-      setSuccessMsg(`Event created. Reminder email queued for ${emailSendDate}.`)
-      setForm({ name: '', date: '', time: '', location: '', mapsUrl: '', description: '' })
+      const calendarSuccess = await pushToGoogleCalendar({
+        name: form.name,
+        date: form.date,
+        time: form.time,
+        location: form.location,
+        description: form.description
+      })
+
+      const calendarMsg = calendarSuccess
+        ? 'Event created · Calendar updated · Reminder email queued for ' + emailSendDate
+        : 'Event saved · Calendar push failed — check console · Email queued for ' + emailSendDate
+
+      setSuccessMsg(calendarMsg)
+      setForm({ name: '', date: '', time: '18:00', location: '', mapsUrl: '', description: '' })
       fetchEvents()
     } catch (err) {
       console.error('Error creating event:', err)
@@ -218,27 +238,41 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
 
             <div className="admin-form-group">
               <label htmlFor="time">Time</label>
-              <input
-                type="time"
+              <select
                 id="time"
                 name="time"
                 value={form.time}
-                onChange={handleChange}
-              />
+                onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}
+              >
+                <option value="">Select a time</option>
+                {Array.from({ length: 24 * 12 }, (_, i) => {
+                  const totalMinutes = i * 5
+                  const hours = Math.floor(totalMinutes / 60)
+                  const minutes = totalMinutes % 60
+                  const ampm = hours < 12 ? 'AM' : 'PM'
+                  const displayHours = hours % 12 === 0 ? 12 : hours % 12
+                  const displayMinutes = minutes.toString().padStart(2, '0')
+                  const value = `${hours.toString().padStart(2, '0')}:${displayMinutes}`
+                  const label = `${displayHours}:${displayMinutes} ${ampm}`
+                  return (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  )
+                })}
+              </select>
             </div>
 
             <div className="admin-form-group">
               <label htmlFor="location">Location</label>
-              <input
-                type="text"
-                id="location"
-                name="location"
+              <LocationAutocomplete
                 value={form.location}
-                onChange={handleChange}
-                placeholder="2100 Locust St, St. Louis, MO 63103"
+                onChange={(address, mapsUrl) =>
+                  setForm(prev => ({ ...prev, location: address, mapsUrl }))
+                }
               />
               <span className="admin-field-hint">
-                Address will automatically become a Google Maps link on the public site
+                Select an address from the dropdown to generate a Google Maps link automatically
               </span>
             </div>
 
@@ -300,5 +334,54 @@ function GoogleIcon() {
       <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
       <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
     </svg>
+  )
+}
+
+function LocationAutocomplete({
+  value,
+  onChange
+}: {
+  value: string
+  onChange: (address: string, mapsUrl: string) => void
+}) {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
+
+  useEffect(() => {
+    if (!inputRef.current || !window.google) return
+
+    autocompleteRef.current = new window.google.maps.places.Autocomplete(
+      inputRef.current,
+      {
+        types: ['address'],
+        componentRestrictions: { country: 'us' }
+      }
+    )
+
+    autocompleteRef.current.addListener('place_changed', () => {
+      const place = autocompleteRef.current?.getPlace()
+      if (!place?.formatted_address) return
+      const address = place.formatted_address
+      const mapsUrl = 'https://maps.google.com/?q=' + encodeURIComponent(address)
+      onChange(address, mapsUrl)
+    })
+
+    return () => {
+      if (autocompleteRef.current) {
+        window.google.maps.event.clearInstanceListeners(autocompleteRef.current)
+      }
+    }
+  }, [])
+
+  return (
+    <input
+      ref={inputRef}
+      type="text"
+      id="location"
+      name="location"
+      defaultValue={value}
+      placeholder="2100 Locust St, St. Louis, MO 63103"
+      className="pac-input"
+    />
   )
 }

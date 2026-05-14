@@ -342,6 +342,23 @@
   flex-shrink: 0;
 }
 
+.admin-form-group select {
+  background: #0F0E0C;
+  border: 1px solid #3A3830;
+  border-radius: 4px;
+  padding: 0.6rem 0.85rem;
+  font-family: monospace;
+  font-size: 0.88rem;
+  color: #E8E0D0;
+  outline: none;
+  transition: border-color 0.15s;
+  cursor: pointer;
+}
+
+.admin-form-group select:focus {
+  border-color: #C9A84C;
+}
+
 @media (max-width: 520px) {
   .form-row {
     grid-template-columns: 1fr;
