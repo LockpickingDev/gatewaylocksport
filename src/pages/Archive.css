@@ -1,0 +1,112 @@
+.archive {
+  min-height: calc(100vh - 64px);
+}
+
+.archive-hero {
+  background: #0F0E0C;
+  padding: 3rem 2rem 2.5rem;
+  border-bottom: 2px solid #7A6328;
+}
+
+.archive-section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.no-events {
+  color: #888780;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.year-group {
+  margin-bottom: 2rem;
+}
+
+.year-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #E8E0D0;
+  padding: 0 0 0.5rem;
+  cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #7A6328;
+  text-align: left;
+}
+
+.year-heading:hover {
+  color: #C9A84C;
+}
+
+.year-events {
+  margin-top: 0.5rem;
+}
+
+.archive-event {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #E8E0D0;
+  align-items: baseline;
+}
+
+.archive-event:last-child {
+  border-bottom: none;
+}
+
+.archive-event-date {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #B8B4A8;
+  flex-shrink: 0;
+  width: 100px;
+}
+
+.archive-event-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.archive-event-name {
+  font-size: 0.9rem;
+  color: #0F0E0C;
+}
+
+.archive-event-loc {
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: #8B3A1E;
+  text-decoration: none;
+}
+
+.archive-event-loc:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .archive-hero {
+    padding: 2rem 1.25rem 1.75rem;
+  }
+
+  .archive-section {
+    padding: 2rem 1.25rem;
+  }
+
+  .archive-event {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .archive-event-date {
+    width: auto;
+  }
+}
