@@ -65,7 +65,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!response.ok) {
       const err = await response.json()
-      console.error('Calendar API error:', err)
+      console.error('Calendar API error full details:', JSON.stringify(err, null, 2))
+      console.error('Response status:', response.status)
+      console.error('Service account email:', process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL)
       return res.status(500).json({ error: 'Calendar API error', details: err })
     }
 
