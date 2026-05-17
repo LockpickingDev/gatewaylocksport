@@ -7,7 +7,7 @@ const FROM_EMAIL = 'Gateway Locksport <events@gatewaylocksport.com>'
 
 function initFirebaseAdmin() {
   if (getApps().length > 0) return
-  const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON || '{}')
+  const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT_JSON || '{}')
   initializeApp({
     credential: cert({
       projectId: serviceAccount.project_id,
