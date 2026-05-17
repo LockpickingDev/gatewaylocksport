@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { collection, addDoc } from 'firebase/firestore'
+import { db } from '../lib/firebase'
 import './Signup.css'
 
 interface FormState {
@@ -46,9 +48,20 @@ export default function Signup() {
       return
     }
     setLoading(true)
-    await new Promise(resolve => setTimeout(resolve, 800))
-    setLoading(false)
-    setSubmitted(true)
+    try {
+      await addDoc(collection(db, 'Subscribers'), {
+        firstName: form.firstName || '',
+        email: form.email.toLowerCase().trim(),
+        subscribedAt: new Date().toISOString().split('T')[0],
+        confirmed: true
+      })
+      setSubmitted(true)
+    } catch (err) {
+      console.error('Signup error:', err)
+      setErrors({ email: 'Something went wrong. Please try again.' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (submitted) {
