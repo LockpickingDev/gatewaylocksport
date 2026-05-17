@@ -15,17 +15,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const privateKey = process.env.GOOGLE_PRIVATE_KEY
-      ? process.env.GOOGLE_PRIVATE_KEY
-          .replace(/\\n/g, '\n')
-          .replace(/\\r/g, '')
-          .replace(/"/g, '')
-      : ''
+    const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON || '{}')
 
     const auth = new GoogleAuth({
       credentials: {
-        client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-        private_key: privateKey
+        client_email: serviceAccount.client_email,
+        private_key: serviceAccount.private_key
       },
       scopes: ['https://www.googleapis.com/auth/calendar.events']
     })
