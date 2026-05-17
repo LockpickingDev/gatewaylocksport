@@ -4,18 +4,18 @@ import { db } from '../lib/firebase'
 import './Signup.css'
 
 interface FormState {
-  firstName: string
+  nameAlias: string
   email: string
 }
 
 interface FormErrors {
-  firstName?: string
+  nameAlias?: string
   email?: string
   captcha?: string
 }
 
 export default function Signup() {
-  const [form, setForm] = useState<FormState>({ firstName: '', email: '' })
+  const [form, setForm] = useState<FormState>({ nameAlias: '', email: '' })
   const [errors, setErrors] = useState<FormErrors>({})
   const [captchaChecked, setCaptchaChecked] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -50,7 +50,7 @@ export default function Signup() {
     setLoading(true)
     try {
       await addDoc(collection(db, 'Subscribers'), {
-        firstName: form.firstName || '',
+        nameAlias: form.nameAlias || '',
         email: form.email.toLowerCase().trim(),
         subscribedAt: new Date().toISOString().split('T')[0],
         confirmed: true
@@ -80,7 +80,7 @@ export default function Signup() {
             </div>
           </div>
           <p className="signup-footer-note">
-            Powered by Resend + Firebase · Unsubscribe any time
+            Unsubscribe any time
           </p>
         </section>
       </div>
@@ -102,19 +102,19 @@ export default function Signup() {
           <form onSubmit={handleSubmit} noValidate>
 
             <div className="form-group">
-              <label htmlFor="firstName">First name</label>
+              <label htmlFor="nameAlias">Name or Alias</label>
               <input
                 type="text"
-                id="firstName"
-                name="firstName"
-                value={form.firstName}
+                id="nameAlias"
+                name="nameAlias"
+                value={form.nameAlias}
                 onChange={handleChange}
-                placeholder="Jane"
+                placeholder="Alias"
                 autoComplete="given-name"
-                aria-describedby={errors.firstName ? 'firstName-error' : undefined}
+                aria-describedby={errors.nameAlias ? 'nameAlias-error' : undefined}
               />
-              {errors.firstName && (
-                <span className="field-error" id="firstName-error">{errors.firstName}</span>
+              {errors.nameAlias && (
+                <span className="field-error" id="nameAlias-error">{errors.nameAlias}</span>
               )}
             </div>
 
@@ -128,7 +128,7 @@ export default function Signup() {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                placeholder="jane@example.com"
+                placeholder="alias@example.com"
                 autoComplete="email"
                 aria-describedby={errors.email ? 'email-error' : undefined}
               />

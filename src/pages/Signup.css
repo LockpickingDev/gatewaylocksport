@@ -16,6 +16,7 @@
   margin: 0.75rem 0 0;
   max-width: 500px;
   line-height: 1.65;
+  text-align: center;
 }
 
 .signup-section {
@@ -204,6 +205,8 @@
   font-family: monospace;
   text-align: center;
 }
+
+
 
 @media (max-width: 480px) {
   .signup-hero {

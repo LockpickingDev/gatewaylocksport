@@ -59,7 +59,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.log('Sending emails for event:', event.name)
 
       const emailPromises = subscribers.map(subscriber =>
-        sendEventEmail(subscriber.email, subscriber.firstName, event)
+        sendEventEmail(subscriber.email, subscriber.nameAlias , event)
       )
 
       const emailResults = await Promise.allSettled(emailPromises)
@@ -82,10 +82,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
 async function sendEventEmail(
   to: string,
-  firstName: string,
+  nameAlias : string,
   event: any
 ): Promise<void> {
-  const greeting = firstName ? `Hi ${firstName}` : 'Hi there'
+  const greeting = nameAlias  ? `Hi ${nameAlias }` : 'Hi there'
 
   const html = `
     <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; color: #0F0E0C;">

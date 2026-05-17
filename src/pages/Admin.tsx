@@ -101,7 +101,7 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
     time: '18:00',
     location: '',
     mapsUrl: '',
-    description: 'Eventdescriptionanddetailsgohere.'
+    description: ''
   })
   const [submitting, setSubmitting] = useState(false)
   const [successMsg, setSuccessMsg] = useState('')
