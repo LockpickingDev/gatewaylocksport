@@ -3,6 +3,7 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import Calendar from './pages/Calendar'
+import Gallery from './pages/Gallery'
 import Archive from './pages/Archive'
 import Signup from './pages/Signup'
 import Admin from './pages/Admin'
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/archive" element={<Archive />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/admin" element={<Admin />} />

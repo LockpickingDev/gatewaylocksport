@@ -11,6 +11,7 @@ export default function Footer() {
           <ul className="footer-links">
             <li><NavLink to="/">Home</NavLink></li>
             <li><NavLink to="/calendar">Calendar</NavLink></li>
+            <li><NavLink to="/gallery">Gallery</NavLink></li>
             <li><NavLink to="/archive">Archive</NavLink></li>
             <li><NavLink to="/signup">Email List Signup</NavLink></li>
           </ul>

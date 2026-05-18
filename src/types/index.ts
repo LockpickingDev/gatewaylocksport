@@ -17,3 +17,12 @@ export interface Subscriber {
   subscribedAt: string
   confirmed: boolean
 }
+
+export interface GalleryPhoto {
+  id: string
+  url: string
+  caption: string
+  uploadDate: string
+  year: number
+  fileName: string
+}

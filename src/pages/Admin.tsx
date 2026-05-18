@@ -4,6 +4,10 @@ import { signInWithPopup, signOut, onAuthStateChanged, GoogleAuthProvider } from
 import { collection, addDoc, getDocs, orderBy, query } from 'firebase/firestore'
 import { auth, googleProvider, db } from '../lib/firebase'
 import { pushToGoogleCalendar } from '../lib/calendar'
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
+import { deleteDoc, doc } from 'firebase/firestore'
+import { storage } from '../lib/firebase'
+import type { GalleryPhoto } from '../types'
 import type { Event } from '../types'
 import './Admin.css'
 
@@ -314,6 +318,10 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
             </div>
           )}
         </section>
+        <section className="admin-card">
+          <h2 className="admin-card-title">Gallery Photos</h2>
+          <GalleryUploader />
+        </section>
       </div>
     </div>
   )
@@ -383,5 +391,168 @@ function LocationAutocomplete({
       placeholder="2100 Locust St, St. Louis, MO 63103"
       className="pac-input"
     />
+  )
+}
+
+function GalleryUploader() {
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+  const [captions, setCaptions] = useState<Record<number, string>>({})
+  const [uploading, setUploading] = useState(false)
+  const [uploadMsg, setUploadMsg] = useState('')
+  const [existingPhotos, setExistingPhotos] = useState<GalleryPhoto[]>([])
+  const [loadingPhotos, setLoadingPhotos] = useState(true)
+
+  useEffect(() => {
+    fetchGalleryPhotos()
+  }, [])
+
+  async function fetchGalleryPhotos() {
+    try {
+      const q = query(collection(db, 'Gallery'), orderBy('uploadDate', 'desc'))
+      const snapshot = await getDocs(q)
+      const fetched = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as GalleryPhoto[]
+      setExistingPhotos(fetched)
+    } catch (err) {
+      console.error('Error fetching gallery photos:', err)
+    } finally {
+      setLoadingPhotos(false)
+    }
+  }
+
+  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || []).slice(0, 15)
+    setSelectedFiles(files)
+    setCaptions({})
+  }
+
+  async function handleUpload() {
+    if (selectedFiles.length === 0) return
+    setUploading(true)
+    setUploadMsg('')
+
+    try {
+      const uploadDate = new Date().toISOString().split('T')[0]
+      const year = new Date().getFullYear()
+
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const file = selectedFiles[i]
+        const fileName = `gallery/${Date.now()}-${file.name}`
+        const storageRef = ref(storage, fileName)
+        await uploadBytes(storageRef, file)
+        const url = await getDownloadURL(storageRef)
+
+        await addDoc(collection(db, 'Gallery'), {
+          url,
+          caption: captions[i] || '',
+          uploadDate,
+          year,
+          fileName
+        })
+      }
+
+      setUploadMsg(`${selectedFiles.length} photo${selectedFiles.length !== 1 ? 's' : ''} uploaded successfully`)
+      setSelectedFiles([])
+      setCaptions({})
+      fetchGalleryPhotos()
+    } catch (err) {
+      console.error('Upload error:', err)
+      setUploadMsg('Upload failed. Please try again.')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  async function handleDelete(photo: GalleryPhoto) {
+    if (!confirm(`Delete this photo?`)) return
+    try {
+      const storageRef = ref(storage, photo.fileName)
+      await deleteObject(storageRef)
+      await deleteDoc(doc(db, 'Gallery', photo.id))
+      setExistingPhotos(prev => prev.filter(p => p.id !== photo.id))
+    } catch (err) {
+      console.error('Delete error:', err)
+    }
+  }
+
+  return (
+    <div>
+      <div className="admin-form-group">
+        <label>Select photos (up to 15)</label>
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleFileSelect}
+          style={{ color: '#E8E0D0' }}
+        />
+      </div>
+
+      {selectedFiles.length > 0 && (
+        <div>
+          <div className="gallery-preview-grid">
+            {selectedFiles.map((file, i) => (
+              <div key={i} className="gallery-preview-item">
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={file.name}
+                />
+                <input
+                  className="admin-input"
+                  type="text"
+                  placeholder="Optional caption"
+                  value={captions[i] || ''}
+                  onChange={e => setCaptions(prev => ({ ...prev, [i]: e.target.value }))}
+                  style={{ marginTop: '0.5rem', fontSize: '0.78rem', padding: '0.4rem 0.6rem' }}
+                />
+              </div>
+            ))}
+          </div>
+
+          <button
+            className="btn-admin"
+            onClick={handleUpload}
+            disabled={uploading}
+            style={{ marginTop: '1rem' }}
+          >
+            {uploading ? 'Uploading...' : `Upload ${selectedFiles.length} photo${selectedFiles.length !== 1 ? 's' : ''}`}
+          </button>
+        </div>
+      )}
+
+      {uploadMsg && (
+        <div className={uploadMsg.includes('failed') ? 'admin-error' : 'admin-success'} style={{ marginTop: '0.75rem' }}>
+          {uploadMsg}
+        </div>
+      )}
+
+      <div style={{ marginTop: '1.5rem' }}>
+        <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7A6328', marginBottom: '0.75rem' }}>
+          Existing photos ({existingPhotos.length})
+        </div>
+        {loadingPhotos ? (
+          <p className="admin-meta">Loading...</p>
+        ) : existingPhotos.length === 0 ? (
+          <p className="admin-meta">No photos uploaded yet.</p>
+        ) : (
+          <div className="gallery-admin-grid">
+            {existingPhotos.map(photo => (
+              <div key={photo.id} className="gallery-admin-item">
+                <img src={photo.url} alt={photo.caption || 'gallery photo'} />
+                <div className="gallery-admin-meta">
+                  <span>{photo.uploadDate}</span>
+                  {photo.caption && <span>{photo.caption}</span>}
+                </div>
+                <button className="gallery-admin-delete" onClick={() => handleDelete(photo)}>
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
