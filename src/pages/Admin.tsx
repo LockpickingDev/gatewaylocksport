@@ -5,7 +5,6 @@ import { collection, addDoc, getDocs, orderBy, query, deleteDoc, doc, updateDoc 
 import { auth, googleProvider, db } from '../lib/firebase'
 import { pushToGoogleCalendar } from '../lib/calendar'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
-import { deleteDoc, doc } from 'firebase/firestore'
 import { storage } from '../lib/firebase'
 import type { GalleryPhoto } from '../types'
 import type { Event } from '../types'
