@@ -49,12 +49,25 @@ export default function Signup() {
     }
     setLoading(true)
     try {
+      const token = crypto.randomUUID()
       await addDoc(collection(db, 'Subscribers'), {
         nameAlias: form.nameAlias || '',
         email: form.email.toLowerCase().trim(),
         subscribedAt: new Date().toISOString().split('T')[0],
-        confirmed: true
+        confirmed: false,
+        token
       })
+
+      await fetch('/api/send-confirmation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: form.email.toLowerCase().trim(),
+          nameAlias: form.nameAlias || '',
+          token
+        })
+      })
+
       setSubmitted(true)
     } catch (err) {
       console.error('Signup error:', err)
@@ -75,8 +88,8 @@ export default function Signup() {
           <div className="signup-card">
             <div className="success-state">
               <CheckIcon />
-              <h2>You're on the list!</h2>
-              <p>Check your inbox for a confirmation email. You'll start receiving event notifications once confirmed.</p>
+              <h2>Almost there!</h2>
+              <p>Check your inbox for a confirmation email and click the link inside to complete your signup.</p>
             </div>
           </div>
           <p className="signup-footer-note">
