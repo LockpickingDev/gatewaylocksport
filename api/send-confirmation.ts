@@ -41,7 +41,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           If you didn't sign up for this list, you can safely ignore this email.
         </p>
         <p style="font-size: 13px; color: #888780; margin: 8px 0 0;">
-          Or copy and paste this link into your browser:<br />
+          If the above button doesn't work, you can also copy and paste this link into your browser:<br />
           <span style="color: #3A3830;">${confirmUrl}</span>
         </p>
       </div>
