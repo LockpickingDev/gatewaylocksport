@@ -20,12 +20,6 @@ export default function Calendar() {
             title="Gateway Locksport Event Calendar"
           />
         </div>
-
-        <div className="calendar-note">
-          <strong>Can't see the calendar?</strong> Make sure the Gateway Locksport Google Calendar
-          is set to public in Google Calendar settings. Go to Settings → your calendar →
-          Access permissions → check "Make available to public".
-        </div>
       </section>
     </div>
   )

@@ -6,6 +6,7 @@ import Calendar from './pages/Calendar'
 import Gallery from './pages/Gallery'
 import Archive from './pages/Archive'
 import Signup from './pages/Signup'
+import Confirm from './pages/Confirm'
 import Admin from './pages/Admin'
 import './App.css'
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/archive" element={<Archive />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/confirm" element={<Confirm />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

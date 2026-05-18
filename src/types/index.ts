@@ -12,10 +12,11 @@ export interface Event {
 
 export interface Subscriber {
   id: string
-  firstName: string
+  nameAlias: string
   email: string
   subscribedAt: string
   confirmed: boolean
+  token: string
 }
 
 export interface GalleryPhoto {
