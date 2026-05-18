@@ -445,7 +445,7 @@ function GalleryUploader() {
         const storageRef = ref(storage, fileName)
         await uploadBytes(storageRef, file)
         const url = await getDownloadURL(storageRef)
-        const uploadedAt = Date.now() + i
+        const uploadedAt = Date.now() + i //Add index to ensure unique timestamp for ordering
 
         await addDoc(collection(db, 'Gallery'), {
           url,
