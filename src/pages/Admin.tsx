@@ -1,7 +1,7 @@
 /// <reference types="@types/google.maps" />
 import { useRef, useState, useEffect } from 'react'
 import { signInWithPopup, signOut, onAuthStateChanged, GoogleAuthProvider } from 'firebase/auth'
-import { collection, addDoc, getDocs, orderBy, query } from 'firebase/firestore'
+import { collection, addDoc, getDocs, orderBy, query, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { auth, googleProvider, db } from '../lib/firebase'
 import { pushToGoogleCalendar } from '../lib/calendar'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
@@ -401,6 +401,9 @@ function GalleryUploader() {
   const [uploadMsg, setUploadMsg] = useState('')
   const [existingPhotos, setExistingPhotos] = useState<GalleryPhoto[]>([])
   const [loadingPhotos, setLoadingPhotos] = useState(true)
+  const [editingCaption, setEditingCaption] = useState<Record<string, string>>({})
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [savingCaption, setSavingCaption] = useState(false)
 
   useEffect(() => {
     fetchGalleryPhotos()
@@ -465,8 +468,37 @@ function GalleryUploader() {
     }
   }
 
+  function startEditingCaption(photo: GalleryPhoto) {
+    setEditingId(photo.id)
+    setEditingCaption(prev => ({ ...prev, [photo.id]: photo.caption || '' }))
+  }
+
+  function cancelEditingCaption() {
+    setEditingId(null)
+  }
+
+  async function saveCaption(photoId: string) {
+    setSavingCaption(true)
+    try {
+      await updateDoc(doc(db, 'Gallery', photoId), {
+        caption: editingCaption[photoId] || ''
+      })
+      setExistingPhotos(prev =>
+        prev.map(p => p.id === photoId
+          ? { ...p, caption: editingCaption[photoId] || '' }
+          : p
+        )
+      )
+      setEditingId(null)
+    } catch (err) {
+      console.error('Error saving caption:', err)
+    } finally {
+      setSavingCaption(false)
+    }
+  }
+
   async function handleDelete(photo: GalleryPhoto) {
-    if (!confirm(`Delete this photo?`)) return
+    if (!confirm('Delete this photo?')) return
     try {
       const storageRef = ref(storage, photo.fileName)
       await deleteObject(storageRef)
@@ -495,10 +527,7 @@ function GalleryUploader() {
           <div className="gallery-preview-grid">
             {selectedFiles.map((file, i) => (
               <div key={i} className="gallery-preview-item">
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt={file.name}
-                />
+                <img src={URL.createObjectURL(file)} alt={file.name} />
                 <input
                   className="admin-input"
                   type="text"
@@ -523,7 +552,10 @@ function GalleryUploader() {
       )}
 
       {uploadMsg && (
-        <div className={uploadMsg.includes('failed') ? 'admin-error' : 'admin-success'} style={{ marginTop: '0.75rem' }}>
+        <div
+          className={uploadMsg.includes('failed') ? 'admin-error' : 'admin-success'}
+          style={{ marginTop: '0.75rem' }}
+        >
           {uploadMsg}
         </div>
       )}
@@ -532,6 +564,7 @@ function GalleryUploader() {
         <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7A6328', marginBottom: '0.75rem' }}>
           Existing photos ({existingPhotos.length})
         </div>
+
         {loadingPhotos ? (
           <p className="admin-meta">Loading...</p>
         ) : existingPhotos.length === 0 ? (
@@ -541,13 +574,63 @@ function GalleryUploader() {
             {existingPhotos.map(photo => (
               <div key={photo.id} className="gallery-admin-item">
                 <img src={photo.url} alt={photo.caption || 'gallery photo'} />
+
                 <div className="gallery-admin-meta">
                   <span>{photo.uploadDate}</span>
-                  {photo.caption && <span>{photo.caption}</span>}
+                  {photo.caption && editingId !== photo.id && (
+                    <span className="gallery-admin-caption">{photo.caption}</span>
+                  )}
                 </div>
-                <button className="gallery-admin-delete" onClick={() => handleDelete(photo)}>
-                  Delete
-                </button>
+
+                {editingId === photo.id ? (
+                  <div className="gallery-caption-edit">
+                    <input
+                      className="admin-input"
+                      type="text"
+                      placeholder="Add a caption..."
+                      value={editingCaption[photo.id] || ''}
+                      onChange={e => setEditingCaption(prev => ({
+                        ...prev,
+                        [photo.id]: e.target.value
+                      }))}
+                      style={{ fontSize: '0.78rem', padding: '0.4rem 0.6rem', marginBottom: '0.4rem' }}
+                      autoFocus
+                    />
+                    <div className="gallery-caption-actions">
+                      <button
+                        className="btn-admin"
+                        onClick={() => saveCaption(photo.id)}
+                        disabled={savingCaption}
+                        style={{ fontSize: '0.72rem', padding: '0.3rem 0.75rem' }}
+                      >
+                        {savingCaption ? 'Saving...' : 'Save'}
+                      </button>
+                      <button
+                        className="btn-admin-ghost"
+                        onClick={cancelEditingCaption}
+                        style={{ fontSize: '0.72rem', padding: '0.3rem 0.75rem' }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="gallery-caption-actions">
+                    <button
+                      className="btn-admin-ghost"
+                      onClick={() => startEditingCaption(photo)}
+                      style={{ fontSize: '0.72rem', padding: '0.3rem 0.75rem' }}
+                    >
+                      {photo.caption ? 'Edit caption' : 'Add caption'}
+                    </button>
+                    <button
+                      className="gallery-admin-delete"
+                      onClick={() => handleDelete(photo)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>

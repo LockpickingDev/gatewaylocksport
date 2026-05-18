@@ -359,7 +359,9 @@
   border-color: #C9A84C;
 }
 
+/****************************/
 /* Gallery Uploader section */
+/****************************/
 .gallery-preview-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -425,6 +427,50 @@
   background: rgba(139, 58, 30, 0.1);
 }
 
+.gallery-caption-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+
+.gallery-caption-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.gallery-admin-caption {
+  font-style: italic;
+  color: #7A6328;
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+.btn-admin-ghost {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: #B8B4A8;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid #3A3830;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.btn-admin-ghost:hover {
+  border-color: #7A6328;
+  color: #C9A84C;
+}
+
+/*****************/
+/* Media Queries */
+/*****************/
 @media (max-width: 520px) {
   .form-row {
     grid-template-columns: 1fr;
