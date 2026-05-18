@@ -13,7 +13,7 @@ export default function Gallery() {
   useEffect(() => {
     async function fetchPhotos() {
       try {
-        const q = query(collection(db, 'Gallery'), orderBy('uploadDate', 'desc'))
+        const q = query(collection(db, 'Gallery'), orderBy('uploadedAt', 'desc'))
         const snapshot = await getDocs(q)
         const fetched = snapshot.docs.map(doc => ({
           id: doc.id,

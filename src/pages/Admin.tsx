@@ -410,7 +410,7 @@ function GalleryUploader() {
 
   async function fetchGalleryPhotos() {
     try {
-      const q = query(collection(db, 'Gallery'), orderBy('uploadDate', 'desc'))
+      const q = query(collection(db, 'Gallery'), orderBy('uploadedAt', 'desc'))
       const snapshot = await getDocs(q)
       const fetched = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -445,11 +445,13 @@ function GalleryUploader() {
         const storageRef = ref(storage, fileName)
         await uploadBytes(storageRef, file)
         const url = await getDownloadURL(storageRef)
+        const uploadedAt = Date.now() + i //Add index to ensure upload ordering 
 
         await addDoc(collection(db, 'Gallery'), {
           url,
           caption: captions[i] || '',
           uploadDate,
+          uploadedAt,
           year,
           fileName
         })

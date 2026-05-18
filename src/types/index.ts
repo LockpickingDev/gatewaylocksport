@@ -23,6 +23,7 @@ export interface GalleryPhoto {
   url: string
   caption: string
   uploadDate: string
+  uploadedAt: number
   year: number
   fileName: string
 }
