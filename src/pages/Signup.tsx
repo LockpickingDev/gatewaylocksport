@@ -106,7 +106,7 @@ export default function Signup() {
         <div className="section-label">Stay Connected</div>
         <div className="section-title">Email List Signup</div>
         <p className="signup-hero-sub">
-          Get notified about upcoming events, meetups, and locksport news delivered to your inbox.
+          Get notified about upcoming meetups and events.
         </p>
       </section>
 
