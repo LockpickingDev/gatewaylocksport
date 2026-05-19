@@ -12,7 +12,7 @@
   font-size: 0.9rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #7A6328;
+  color: #b87d0e;
 }
 
 .admin-login-wrap {
@@ -24,14 +24,14 @@
 }
 
 .admin-login-card {
-  background: #1E1C18;
-  border: 1px solid #7A6328;
+  background: #1a1917;
+  border: 1px solid #b87d0e;
   border-radius: 8px;
   padding: 2.5rem 2.25rem;
   width: 100%;
   max-width: 400px;
   text-align: center;
-  color: #C9A84C;
+  color: #ffb81c;
 }
 
 .admin-login-card h1 {
@@ -117,7 +117,7 @@
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #7A6328;
+  color: #b87d0e;
   margin-bottom: 0.25rem;
 }
 
@@ -127,7 +127,7 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #C9A84C;
+  color: #ffb81c;
   margin: 0;
 }
 
@@ -160,8 +160,8 @@
 }
 
 .btn-signout:hover {
-  border-color: #7A6328;
-  color: #C9A84C;
+  border-color: #b87d0e;
+  color: #ffb81c;
 }
 
 .admin-body {
@@ -171,7 +171,7 @@
 }
 
 .admin-card {
-  background: #1E1C18;
+  background: #1a1917;
   border: 1px solid #3A3830;
   border-radius: 8px;
   padding: 1.75rem 2rem;
@@ -183,7 +183,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #C9A84C;
+  color: #ffb81c;
   margin: 0 0 1.25rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid #2a2820;
@@ -234,7 +234,7 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #7A6328;
+  color: #b87d0e;
   margin-bottom: 0.35rem;
 }
 
@@ -254,7 +254,7 @@
 
 .admin-form-group input:focus,
 .admin-form-group textarea:focus {
-  border-color: #C9A84C;
+  border-color: #ffb81c;
 }
 
 .admin-field-hint {
@@ -281,7 +281,7 @@
 
 .btn-admin {
   padding: 0.65rem 1.5rem;
-  background: #C9A84C;
+  background: #ffb81c;
   color: #0F0E0C;
   font-family: 'Oswald', sans-serif;
   font-size: 0.85rem;
@@ -295,7 +295,7 @@
 }
 
 .btn-admin:hover:not(:disabled) {
-  background: #E8CC7A;
+  background: #ffd24d;
 }
 
 .btn-admin:disabled {
@@ -338,7 +338,7 @@
 .admin-event-date {
   font-family: monospace;
   font-size: 0.75rem;
-  color: #7A6328;
+  color: #b87d0e;
   flex-shrink: 0;
 }
 
@@ -356,7 +356,7 @@
 }
 
 .admin-form-group select:focus {
-  border-color: #C9A84C;
+  border-color: #ffb81c;
 }
 
 /****************************/
@@ -443,7 +443,7 @@
 
 .gallery-admin-caption {
   font-style: italic;
-  color: #7A6328;
+  color: #b87d0e;
   font-size: 0.68rem;
   line-height: 1.4;
 }
@@ -464,8 +464,8 @@
 }
 
 .btn-admin-ghost:hover {
-  border-color: #7A6328;
-  color: #C9A84C;
+  border-color: #b87d0e;
+  color: #ffb81c;
 }
 
 /*****************/

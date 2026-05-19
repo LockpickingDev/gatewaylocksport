@@ -1,6 +1,6 @@
 .footer {
   background: #0F0E0C;
-  border-top: 2px solid #7A6328;
+  border-top: 2px solid #b87d0e;
   padding: 2.5rem 2rem 1.5rem;
   margin-top: 4rem;
 }
@@ -19,7 +19,7 @@
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #7A6328;
+  color: #b87d0e;
   margin-bottom: 0.75rem;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .footer-links a:hover {
-  color: #C9A84C;
+  color: #ffb81c;
 }
 
 .social-row {
@@ -71,8 +71,8 @@
 }
 
 .social-btn:hover {
-  border-color: #7A6328;
-  color: #C9A84C;
+  border-color: #b87d0e;
+  color: #ffb81c;
 }
 
 .footer-about {

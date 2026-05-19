@@ -15,17 +15,20 @@ export default function Home() {
     <div className="home">
       <section className="hero">
         <div className="hero-img">
-          <LockIcon />
+          <img src="/Gateway-Locksport-Logo-PNG-white-no-words-black-keyhole.png" alt="" aria-hidden="true" />
         </div>
         <h1>Gateway Locksport</h1>
-        <p>St. Louis's home for lock sport enthusiasts — where curiosity meets craftsmanship, and every pin is a puzzle waiting to be solved.</p>
+        <p className="hero-about">
+          A St. Louis area community open to everyone interested in lockpicking, physical security, and locksport. We host free monthly meetups in St. Louis and St. Charles, Missouri — welcoming everyone from curious newcomers to seasoned sport pickers. We are a proud{' '}
+          <a href="https://lockpickersunited.com/" target="_blank" rel="noopener noreferrer">Lockpickers United</a>{' '}
+          group.
+        </p>
         <div className="hero-rule" />
       </section>
 
       <section className="events-section">
         <div className="events-header">
-          <div className="section-label">Upcoming Events</div>
-          <div className="section-title">What's Coming Up</div>
+          <h2 className="events-heading">Upcoming Events</h2>
         </div>
 
         {loading && <p className="events-status">Loading events...</p>}
@@ -78,13 +81,6 @@ function EventCard({ event }: { event: Event }) {
   )
 }
 
-function LockIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 1C9.24 1 7 3.24 7 6v2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h-2V6c0-2.76-2.24-5-5-5zm0 2c1.66 0 3 1.34 3 3v2H9V6c0-1.66 1.34-3 3-3zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z" />
-    </svg>
-  )
-}
 
 function PinIcon() {
   return (
