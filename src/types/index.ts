@@ -8,6 +8,8 @@ export interface Event {
   description: string
   year: number
   createdAt: string
+  imageUrl?: string
+  imageName?: string
 }
 
 export interface Subscriber {

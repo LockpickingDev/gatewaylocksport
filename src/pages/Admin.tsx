@@ -106,6 +106,8 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
     mapsUrl: '',
     description: ''
   })
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [successMsg, setSuccessMsg] = useState('')
   const [formError, setFormError] = useState('')
@@ -139,6 +141,12 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
     }
   }
 
+  function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0] ?? null
+    setImageFile(file)
+    setImagePreview(file ? URL.createObjectURL(file) : null)
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setFormError('')
@@ -156,6 +164,15 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
       emailDate.setDate(emailDate.getDate() - 3)
       const emailSendDate = emailDate.toISOString().split('T')[0]
 
+      let imageUrl = ''
+      let imageName = ''
+      if (imageFile) {
+        imageName = `events/${Date.now()}-${imageFile.name}`
+        const storageRef = ref(storage, imageName)
+        await uploadBytes(storageRef, imageFile)
+        imageUrl = await getDownloadURL(storageRef)
+      }
+
       await addDoc(collection(db, 'Events'), {
         name: form.name,
         date: form.date,
@@ -165,7 +182,9 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
         description: form.description,
         year,
         createdAt: new Date().toISOString().split('T')[0],
-        emailSendDate
+        emailSendDate,
+        imageUrl,
+        imageName
       })
 
       const calendarSuccess = await pushToGoogleCalendar({
@@ -182,6 +201,8 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
 
       setSuccessMsg(calendarMsg)
       setForm({ name: '', date: '', time: '18:00', location: '', mapsUrl: '', description: '' })
+      setImageFile(null)
+      setImagePreview(null)
       fetchEvents()
     } catch (err) {
       console.error('Error creating event:', err)
@@ -291,6 +312,29 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
               />
             </div>
 
+            <div className="admin-form-group">
+              <label>Event image (optional)</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageSelect}
+                style={{ color: '#E8E0D0' }}
+              />
+              {imagePreview && (
+                <div className="event-image-preview">
+                  <img src={imagePreview} alt="Preview" />
+                  <button
+                    type="button"
+                    className="btn-admin-ghost"
+                    onClick={() => { setImageFile(null); setImagePreview(null) }}
+                    style={{ fontSize: '0.72rem', padding: '0.3rem 0.75rem' }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              )}
+            </div>
+
             {formError && <div className="admin-error">{formError}</div>}
             {successMsg && <div className="admin-success">{successMsg}</div>}
 
@@ -310,8 +354,14 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
             <div className="admin-event-list">
               {events.map(event => (
                 <div key={event.id} className="admin-event-row">
-                  <span className="admin-event-name">{event.name}</span>
-                  <span className="admin-event-date">{event.date} · {event.time}</span>
+                  <div className="admin-event-info">
+                    <span className="admin-event-name">{event.name}</span>
+                    <span className="admin-event-date">{event.date} · {event.time}</span>
+                  </div>
+                  <EventImageManager
+                    event={event}
+                    onUpdate={updated => setEvents(prev => prev.map(e => e.id === updated.id ? updated : e))}
+                  />
                 </div>
               ))}
             </div>
@@ -322,6 +372,98 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
           <GalleryUploader />
         </section>
       </div>
+    </div>
+  )
+}
+
+function EventImageManager({ event, onUpdate }: { event: Event; onUpdate: (updated: Event) => void }) {
+  const [editing, setEditing] = useState(false)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [saving, setSaving] = useState(false)
+
+  function handleSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0] ?? null
+    setImageFile(file)
+    setImagePreview(file ? URL.createObjectURL(file) : null)
+  }
+
+  function cancelEdit() {
+    setEditing(false)
+    setImageFile(null)
+    setImagePreview(null)
+  }
+
+  async function handleSave() {
+    if (!imageFile) return
+    setSaving(true)
+    try {
+      if (event.imageName) {
+        try { await deleteObject(ref(storage, event.imageName)) } catch {}
+      }
+      const imageName = `events/${Date.now()}-${imageFile.name}`
+      const storageRef = ref(storage, imageName)
+      await uploadBytes(storageRef, imageFile)
+      const imageUrl = await getDownloadURL(storageRef)
+      await updateDoc(doc(db, 'Events', event.id), { imageUrl, imageName })
+      onUpdate({ ...event, imageUrl, imageName })
+      cancelEdit()
+    } catch (err) {
+      console.error('Error updating event image:', err)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function handleRemove() {
+    if (!confirm('Remove this event image?')) return
+    setSaving(true)
+    try {
+      if (event.imageName) {
+        try { await deleteObject(ref(storage, event.imageName)) } catch {}
+      }
+      await updateDoc(doc(db, 'Events', event.id), { imageUrl: '', imageName: '' })
+      onUpdate({ ...event, imageUrl: '', imageName: '' })
+    } catch (err) {
+      console.error('Error removing event image:', err)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <div className="event-image-manager">
+      {event.imageUrl && !editing && (
+        <img src={event.imageUrl} alt={event.name} className="event-image-manager-thumb" />
+      )}
+
+      {editing ? (
+        <div className="event-image-edit">
+          <input type="file" accept="image/*" onChange={handleSelect} style={{ color: '#E8E0D0', fontSize: '0.78rem' }} />
+          {imagePreview && (
+            <img src={imagePreview} alt="Preview" className="event-image-manager-thumb" style={{ marginTop: '0.4rem' }} />
+          )}
+          <div className="gallery-caption-actions">
+            <button className="btn-admin" onClick={handleSave} disabled={!imageFile || saving} style={{ fontSize: '0.72rem', padding: '0.3rem 0.75rem' }}>
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+            <button className="btn-admin-ghost" onClick={cancelEdit} style={{ fontSize: '0.72rem', padding: '0.3rem 0.75rem' }}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="gallery-caption-actions">
+          <button className="btn-admin-ghost" onClick={() => setEditing(true)} style={{ fontSize: '0.72rem', padding: '0.3rem 0.75rem' }}>
+            {event.imageUrl ? 'Change' : 'Add image'}
+          </button>
+          {event.imageUrl && (
+            <button className="gallery-admin-delete" onClick={handleRemove} disabled={saving}>
+              Remove
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

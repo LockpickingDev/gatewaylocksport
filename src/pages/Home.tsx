@@ -48,23 +48,29 @@ export default function Home() {
   )
 }
 
+function formatTime(time: string): string {
+  const [h, m] = time.split(':').map(Number)
+  const ampm = h < 12 ? 'AM' : 'PM'
+  const hour = h % 12 === 0 ? 12 : h % 12
+  return `${hour}:${m.toString().padStart(2, '0')} ${ampm}`
+}
+
 function EventCard({ event }: { event: Event }) {
   const d = new Date(event.date + 'T12:00:00')
-  const month = d.toLocaleString('en-US', { month: 'short' }).toUpperCase()
-  const day = d.getDate()
-  const year = d.getFullYear()
+  const dateStr = d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  const timeStr = formatTime(event.time)
 
   return (
-    <div className="event-card">
-      <div className="event-date-badge">
-        <span className="badge-month">{month}</span>
-        <span className="badge-day">{day}</span>
-        <span className="badge-year">{year}</span>
-      </div>
+    <div className={`event-card${event.imageUrl ? ' event-card--has-img' : ''}`}>
+      {event.imageUrl && (
+        <div className="event-card-img">
+          <img src={event.imageUrl} alt={event.name} />
+        </div>
+      )}
       <div className="event-body">
         <h3 className="event-name">{event.name}</h3>
         <div className="event-meta">
-          <span className="event-time">{event.time}</span>
+          <span className="event-datetime">{dateStr} · {timeStr}</span>
           <a
             className="event-location"
             href={event.mapsUrl}
@@ -80,7 +86,6 @@ function EventCard({ event }: { event: Event }) {
     </div>
   )
 }
-
 
 function PinIcon() {
   return (

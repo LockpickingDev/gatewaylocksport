@@ -13,7 +13,9 @@ export async function pushToGoogleCalendar(event: {
     })
 
     if (!response.ok) {
-      const err = await response.json()
+      const text = await response.text()
+      let err: unknown
+      try { err = JSON.parse(text) } catch { err = text }
       console.error('Calendar push error:', err)
       return false
     }

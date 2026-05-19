@@ -63,7 +63,7 @@
 
 .events-header {
   margin-bottom: 1.25rem;
-  text-align: left;
+  text-align: center;
 }
 
 .events-heading {
@@ -108,71 +108,55 @@
 
 .event-card {
   display: grid;
-  grid-template-columns: 72px 1fr;
-  gap: 0 1.25rem;
-  padding: 1.25rem 0;
+  grid-template-columns: 1fr;
+  padding: 1.5rem 0;
   border-bottom: 1px solid #2a2820;
+}
+
+.event-card--has-img {
+  grid-template-columns: 180px 1fr;
+  gap: 0 1.5rem;
 }
 
 .event-card:last-child {
   border-bottom: none;
 }
 
-.event-date-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #0F0E0C;
-  border: 1px solid #b87d0e;
-  border-radius: 4px;
-  padding: 0.5rem 0.25rem;
+.event-card-img {
+  width: 180px;
+  height: 135px;
+  border-radius: 6px;
+  overflow: hidden;
   align-self: start;
   flex-shrink: 0;
+  background: #1a1917;
 }
 
-.badge-month {
-  font-family: 'Oswald', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #ffb81c;
-}
-
-.badge-day {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1;
-}
-
-.badge-year {
-  font-size: 0.6rem;
-  color: #B8B4A8;
-  font-family: monospace;
+.event-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .event-name {
   font-family: 'Oswald', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 600;
   letter-spacing: 0.03em;
   color: #E8E0D0;
-  margin: 0 0 0.3rem;
+  margin: 0 0 0.4rem;
 }
 
 .event-meta {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.6rem;
   align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
 }
 
-.event-time {
+.event-datetime {
   font-family: monospace;
   font-size: 0.82rem;
   color: #888780;
@@ -211,9 +195,14 @@
 }
 
 @media (max-width: 480px) {
-  .event-card {
-    grid-template-columns: 60px 1fr;
-    gap: 0 1rem;
+  .event-card--has-img {
+    grid-template-columns: 1fr;
+  }
+
+  .event-card-img {
+    width: 100%;
+    height: 180px;
+    margin-bottom: 0.75rem;
   }
 
   .hero {

@@ -115,7 +115,7 @@ export default function Signup() {
           <form onSubmit={handleSubmit} noValidate>
 
             <div className="form-group">
-              <label htmlFor="nameAlias">Name or Alias</label>
+              <label htmlFor="nameAlias">Name/Alias</label>
               <input
                 type="text"
                 id="nameAlias"
@@ -177,8 +177,6 @@ export default function Signup() {
             </button>
 
             <div className="security-badges">
-              <span className="badge">HTTPS only</span>
-              <span className="badge">Rate limited</span>
               <span className="badge">Double opt-in</span>
             </div>
 

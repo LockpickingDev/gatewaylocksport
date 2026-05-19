@@ -468,6 +468,53 @@
   color: #ffb81c;
 }
 
+/****************************/
+/* Event image management   */
+/****************************/
+.event-image-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.event-image-preview img {
+  width: 90px;
+  height: 68px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #3A3830;
+}
+
+.admin-event-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.event-image-manager {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.event-image-manager-thumb {
+  width: 64px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #3A3830;
+}
+
+.event-image-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
 /*****************/
 /* Media Queries */
 /*****************/

@@ -3,12 +3,19 @@ import type { Event } from '../types'
 import { useEvents } from '../hooks/useEvents'
 import './Archive.css'
 
+function formatTime(time: string): string {
+  const [h, m] = time.split(':').map(Number)
+  const ampm = h < 12 ? 'AM' : 'PM'
+  const hour = h % 12 === 0 ? 12 : h % 12
+  return `${hour}:${m.toString().padStart(2, '0')} ${ampm}`
+}
+
 export default function Archive() {
   const { events, loading, error } = useEvents()
-  const currentYear = new Date().getFullYear()
+  const today = new Date()
 
   const pastEvents = events
-    .filter(e => e.year < currentYear)
+    .filter(e => new Date(e.date + 'T12:00:00') < today)
 
   const byYear = pastEvents.reduce<Record<number, Event[]>>((acc, event) => {
     if (!acc[event.year]) acc[event.year] = []
@@ -19,6 +26,8 @@ export default function Archive() {
   const years = Object.keys(byYear)
     .map(Number)
     .sort((a, b) => b - a)
+
+  const earliestYear = years.length > 0 ? years[years.length - 1] : null
 
   return (
     <div className="archive">
@@ -34,9 +43,14 @@ export default function Archive() {
           <p className="events-status">No past events yet. Check back after our first year!</p>
         )}
         {!loading && !error && years.length > 0 && (
-          years.map(year => (
-            <YearGroup key={year} year={year} events={byYear[year]} />
-          ))
+          <>
+            <p className="archive-count">
+              {pastEvents.length} event{pastEvents.length !== 1 ? 's' : ''} · picking locks & making friends since {earliestYear}
+            </p>
+            {years.map(year => (
+              <YearGroup key={year} year={year} events={byYear[year]} />
+            ))}
+          </>
         )}
       </section>
     </div>
@@ -69,12 +83,24 @@ function YearGroup({ year, events }: { year: number; events: Event[] }) {
 }
 
 function ArchiveEventRow({ event }: { event: Event }) {
+  const [expanded, setExpanded] = useState(false)
   const d = new Date(event.date + 'T12:00:00')
   const formatted = d.toLocaleString('en-US', { month: 'short', day: 'numeric' })
+  const longDesc = (event.description?.length ?? 0) > 120
 
   return (
     <div className="archive-event">
-      <span className="archive-event-date">{formatted}, {event.year}</span>
+      {event.imageUrl && (
+        <img
+          src={event.imageUrl}
+          alt={event.name}
+          className="archive-event-thumb"
+        />
+      )}
+      <div className="archive-event-date">
+        <span>{formatted}, {event.year}</span>
+        <span className="archive-event-time">{formatTime(event.time)}</span>
+      </div>
       <div className="archive-event-body">
         <span className="archive-event-name">{event.name}</span>
         <a
@@ -86,6 +112,18 @@ function ArchiveEventRow({ event }: { event: Event }) {
           {event.location.split(',')[0]}
         </a>
       </div>
+      {event.description && (
+        <div className="archive-event-desc-wrap">
+          <p className={`archive-event-desc${expanded ? ' expanded' : ''}`}>
+            {event.description}
+          </p>
+          {longDesc && (
+            <button className="archive-read-more" onClick={() => setExpanded(p => !p)}>
+              {expanded ? 'Show less' : 'Read more'}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
