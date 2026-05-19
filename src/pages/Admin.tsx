@@ -108,6 +108,7 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
   })
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [locationKey, setLocationKey] = useState(0)
   const [submitting, setSubmitting] = useState(false)
   const [successMsg, setSuccessMsg] = useState('')
   const [formError, setFormError] = useState('')
@@ -201,6 +202,7 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
 
       setSuccessMsg(calendarMsg)
       setForm({ name: '', date: '', time: '18:00', location: '', mapsUrl: '', description: '' })
+      setLocationKey(prev => prev + 1)
       setImageFile(null)
       setImagePreview(null)
       fetchEvents()
@@ -290,6 +292,7 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
             <div className="admin-form-group">
               <label htmlFor="location">Location</label>
               <LocationAutocomplete
+                key={locationKey}
                 value={form.location}
                 onChange={(address, mapsUrl) =>
                   setForm(prev => ({ ...prev, location: address, mapsUrl }))
