@@ -318,6 +318,7 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
             <div className="admin-form-group">
               <label>Event image (optional)</label>
               <input
+                key={locationKey}
                 type="file"
                 accept="image/*"
                 onChange={handleImageSelect}
@@ -534,6 +535,10 @@ function LocationAutocomplete({
       defaultValue={value}
       placeholder="2100 Locust St, St. Louis, MO 63103"
       className="pac-input"
+      onChange={e => {
+        const val = e.target.value
+        onChange(val, 'https://maps.google.com/?q=' + encodeURIComponent(val))
+      }}
     />
   )
 }
