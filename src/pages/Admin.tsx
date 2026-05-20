@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from 'react'
 import { signInWithPopup, signOut, onAuthStateChanged, GoogleAuthProvider } from 'firebase/auth'
 import { collection, addDoc, getDocs, orderBy, query, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { auth, googleProvider, db } from '../lib/firebase'
-import { pushToGoogleCalendar } from '../lib/calendar'
+import { pushToGoogleCalendar, deleteFromGoogleCalendar } from '../lib/calendar'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 import { storage } from '../lib/firebase'
 import type { GalleryPhoto } from '../types'
@@ -183,7 +183,7 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
         imageUrl = await getDownloadURL(storageRef)
       }
 
-      await addDoc(collection(db, 'Events'), {
+      const docRef = await addDoc(collection(db, 'Events'), {
         name: form.name,
         date: form.date,
         time: form.time,
@@ -197,16 +197,21 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
         imageName
       })
 
-      const calendarSuccess = await pushToGoogleCalendar({
+      const idToken = await auth.currentUser!.getIdToken()
+      const calendarEventId = await pushToGoogleCalendar({
         name: form.name,
         date: form.date,
         time: form.time,
         location: form.location,
         description: form.description
-      })
+      }, idToken)
+
+      if (calendarEventId) {
+        await updateDoc(docRef, { calendarEventId })
+      }
 
       const emailNote = emailSendDate ? ' · Reminder email queued for ' + emailSendDate : ' · No reminder email (past event)'
-      const calendarMsg = calendarSuccess
+      const calendarMsg = calendarEventId
         ? 'Event created · Calendar updated' + emailNote
         : 'Event saved · Calendar push failed — check console' + emailNote
 
@@ -221,6 +226,23 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
       setFormError('Failed to save event. Please try again.')
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  async function handleDeleteEvent(event: Event) {
+    if (!confirm(`Delete "${event.name}"? This will also remove it from Google Calendar.`)) return
+    try {
+      if (event.calendarEventId) {
+        const idToken = await auth.currentUser!.getIdToken()
+        await deleteFromGoogleCalendar(event.calendarEventId, idToken)
+      }
+      if (event.imageName) {
+        try { await deleteObject(ref(storage, event.imageName)) } catch {}
+      }
+      await deleteDoc(doc(db, 'Events', event.id))
+      setEvents(prev => prev.filter(e => e.id !== event.id))
+    } catch (err) {
+      console.error('Error deleting event:', err)
     }
   }
 
@@ -377,10 +399,19 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
                       <span className="admin-event-name">{event.name}</span>
                       <span className="admin-event-date">{event.date} · {event.time}</span>
                     </div>
-                    <EventImageManager
-                      event={event}
-                      onUpdate={updated => setEvents(prev => prev.map(e => e.id === updated.id ? updated : e))}
-                    />
+                    <div className="admin-event-actions">
+                      <EventImageManager
+                        event={event}
+                        onUpdate={updated => setEvents(prev => prev.map(e => e.id === updated.id ? updated : e))}
+                      />
+                      <button
+                        className="gallery-admin-delete"
+                        onClick={() => handleDeleteEvent(event)}
+                        style={{ fontSize: '0.72rem', padding: '0.3rem 0.75rem' }}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

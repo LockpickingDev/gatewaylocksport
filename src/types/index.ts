@@ -10,6 +10,7 @@ export interface Event {
   createdAt: string
   imageUrl?: string
   imageName?: string
+  calendarEventId?: string
 }
 
 export interface Subscriber {

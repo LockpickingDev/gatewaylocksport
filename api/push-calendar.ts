@@ -1,11 +1,16 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { GoogleAuth } from 'google-auth-library'
+import { verifyAdmin } from './_auth'
 
 const CALENDAR_ID = 'GatewayLocksport@gmail.com'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
+  }
+
+  if (!await verifyAdmin(req)) {
+    return res.status(401).json({ error: 'Unauthorized' })
   }
 
   const { name, date, time, location, description } = req.body
@@ -71,7 +76,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(500).json({ error: 'Calendar API error', details: err })
     }
 
-    return res.status(200).json({ success: true })
+    const created = await response.json()
+    return res.status(200).json({ success: true, calendarEventId: created.id })
   } catch (err) {
     console.error('Server error:', err)
     return res.status(500).json({ error: 'Internal server error' })
