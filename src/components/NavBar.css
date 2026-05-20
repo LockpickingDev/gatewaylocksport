@@ -4,7 +4,7 @@
   z-index: 100;
   height: 64px;
   background: #0F0E0C;
-  border-bottom: 2px solid #C9A84C;
+  border-bottom: 2px solid #ffb81c;
   display: flex;
   align-items: center;
   padding: 0 2rem;
@@ -16,16 +16,13 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: #C9A84C;
+  color: #ffb81c;
   flex-shrink: 0;
 }
 
-.navbar-brand span {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.navbar-logo {
+  height: 56px;
+  width: auto;
 }
 
 .navbar-links {
@@ -50,8 +47,8 @@
 
 .navbar-links a:hover,
 .navbar-links a.active {
-  color: #C9A84C;
-  background: rgba(201, 168, 76, 0.1);
+  color: #ffb81c;
+  background: rgba(255, 184, 28, 0.12);
 }
 
 .hamburger {
@@ -83,8 +80,8 @@
   top: 64px;
   left: 0;
   right: 0;
-  background: #1E1C18;
-  border-bottom: 2px solid #C9A84C;
+  background: #1a1917;
+  border-bottom: 2px solid #ffb81c;
   display: flex;
   flex-direction: column;
   padding: 0.5rem 0;
@@ -105,8 +102,8 @@
 
 .mobile-menu a:hover,
 .mobile-menu a.active {
-  color: #C9A84C;
-  background: rgba(201, 168, 76, 0.08);
+  color: #ffb81c;
+  background: rgba(255, 184, 28, 0.1);
 }
 
 @media (max-width: 680px) {

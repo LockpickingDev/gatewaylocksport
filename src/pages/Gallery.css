@@ -4,8 +4,8 @@
 
 .gallery-hero {
   background: #0F0E0C;
-  padding: 3rem 2rem 2.5rem;
-  border-bottom: 2px solid #7A6328;
+  padding: 1.75rem 2rem 1.5rem;
+  border-bottom: 2px solid #b87d0e;
 }
 
 .gallery-hero-sub {
@@ -30,7 +30,7 @@
 }
 
 .gallery-status.error {
-  color: #8B3A1E;
+  color: #e07a5f;
 }
 
 .gallery-year-group {
@@ -42,8 +42,8 @@
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: #7A6328;
-  border-bottom: 1px solid #E8E0D0;
+  color: #ffb81c;
+  border-bottom: 1px solid #2a2820;
   padding-bottom: 0.5rem;
   margin-bottom: 1.25rem;
 }
@@ -148,7 +148,7 @@
 }
 
 .lightbox-close:hover {
-  color: #C9A84C;
+  color: #ffb81c;
 }
 
 .lightbox-meta {
@@ -175,7 +175,7 @@
 
 @media (max-width: 480px) {
   .gallery-hero {
-    padding: 2rem 1.25rem 1.75rem;
+    padding: 1.25rem 1.25rem 1rem;
   }
 
   .gallery-section {

@@ -4,14 +4,34 @@
 
 .archive-hero {
   background: #0F0E0C;
-  padding: 3rem 2rem 2.5rem;
-  border-bottom: 2px solid #7A6328;
+  padding: 1.75rem 2rem 1.5rem;
+  border-bottom: 2px solid #b87d0e;
+}
+
+.archive-hero-stat {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #B8B4A8;
+  margin: 0.75rem 0 0;
+  text-transform: uppercase;
 }
 
 .archive-section {
   max-width: 860px;
   margin: 0 auto;
   padding: 3rem 2rem;
+}
+
+.archive-count {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #B8B4A8;
+  margin: 0 0 1.75rem;
 }
 
 .no-events {
@@ -31,19 +51,19 @@
   width: 100%;
   background: none;
   border: none;
-  border-bottom: 1px solid #E8E0D0;
+  border-bottom: 1px solid #2a2820;
   padding: 0 0 0.5rem;
   cursor: pointer;
   font-family: 'Oswald', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: #7A6328;
+  color: #ffb81c;
   text-align: left;
 }
 
 .year-heading:hover {
-  color: #C9A84C;
+  color: #ffb81c;
 }
 
 .year-events {
@@ -53,9 +73,32 @@
 .archive-event {
   display: flex;
   gap: 1rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #E8E0D0;
-  align-items: baseline;
+  padding: 0.9rem 0.5rem;
+  border-bottom: 1px solid #2a2820;
+  align-items: flex-start;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.archive-event:hover {
+  background: rgba(255, 184, 28, 0.04);
+}
+
+.archive-event-thumb {
+  width: 100px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.archive-event-thumb--clickable {
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.archive-event-thumb--clickable:hover {
+  transform: scale(1.04);
 }
 
 .archive-event:last-child {
@@ -63,6 +106,9 @@
 }
 
 .archive-event-date {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
   font-family: monospace;
   font-size: 0.8rem;
   color: #B8B4A8;
@@ -70,26 +116,76 @@
   width: 100px;
 }
 
+.archive-event-time {
+  font-size: 0.75rem;
+  color: #555248;
+}
+
 .archive-event-body {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  flex-shrink: 0;
+  width: 180px;
 }
 
 .archive-event-name {
   font-size: 0.9rem;
-  color: #0F0E0C;
+  color: #E8E0D0;
 }
 
 .archive-event-loc {
   font-family: monospace;
   font-size: 0.78rem;
-  color: #8B3A1E;
+  color: #e07a5f;
   text-decoration: none;
 }
 
 .archive-event-loc:hover {
   text-decoration: underline;
+}
+
+.archive-event-desc-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-top: 0.05rem;
+}
+
+.archive-event-desc {
+  font-size: 0.82rem;
+  color: #888780;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-style: italic;
+  line-height: 1.55;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.archive-event-desc.expanded {
+  display: block;
+  overflow: visible;
+}
+
+.archive-read-more {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: #b87d0e;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-align: left;
+  width: fit-content;
+}
+
+.archive-read-more:hover {
+  color: #ffb81c;
 }
 
 
@@ -99,7 +195,7 @@
   font-size: 0.85rem;
   border: 1px solid #3A3830;
   border-radius: 0 0 4px 4px;
-  background: #1E1C18;
+  background: #1a1917;
   box-shadow: none;
 }
 
@@ -111,22 +207,22 @@
 }
 
 .pac-item:hover {
-  background: rgba(201, 168, 76, 0.08);
+  background: rgba(255, 184, 28, 0.1);
 }
 
 .pac-item-query {
-  color: #C9A84C;
+  color: #ffb81c;
   font-size: 0.85rem;
 }
 
 .pac-matched {
-  color: #E8CC7A;
+  color: #ffd24d;
 }
 
 
 @media (max-width: 480px) {
   .archive-hero {
-    padding: 2rem 1.25rem 1.75rem;
+    padding: 1.25rem 1.25rem 1rem;
   }
 
   .archive-section {
@@ -135,10 +231,26 @@
 
   .archive-event {
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 0.25rem;
   }
 
   .archive-event-date {
     width: auto;
+    align-items: center;
+  }
+
+  .archive-event-body {
+    width: auto;
+    align-items: center;
+  }
+
+  .archive-event-desc-wrap {
+    align-items: center;
+  }
+
+  .archive-read-more {
+    text-align: center;
   }
 }

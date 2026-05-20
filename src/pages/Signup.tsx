@@ -106,7 +106,7 @@ export default function Signup() {
         <div className="section-label">Stay Connected</div>
         <div className="section-title">Email List Signup</div>
         <p className="signup-hero-sub">
-          Get notified about upcoming events, meetups, and locksport news delivered to your inbox.
+          Get notified about upcoming meetups and events.
         </p>
       </section>
 
@@ -115,7 +115,7 @@ export default function Signup() {
           <form onSubmit={handleSubmit} noValidate>
 
             <div className="form-group">
-              <label htmlFor="nameAlias">Name or Alias</label>
+              <label htmlFor="nameAlias">Name/Alias</label>
               <input
                 type="text"
                 id="nameAlias"
@@ -177,8 +177,6 @@ export default function Signup() {
             </button>
 
             <div className="security-badges">
-              <span className="badge">HTTPS only</span>
-              <span className="badge">Rate limited</span>
               <span className="badge">Double opt-in</span>
             </div>
 
