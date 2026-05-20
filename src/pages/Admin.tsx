@@ -109,6 +109,7 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [locationKey, setLocationKey] = useState(0)
+  const [visibleCount, setVisibleCount] = useState(10)
   const [submitting, setSubmitting] = useState(false)
   const [successMsg, setSuccessMsg] = useState('')
   const [formError, setFormError] = useState('')
@@ -358,31 +359,42 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
         </section>
 
         <section className="admin-card">
-          <h2 className="admin-card-title">Existing Events</h2>
+          <h2 className="admin-card-title">Gallery Photos</h2>
+          <GalleryUploader />
+        </section>
+        <section className="admin-card">
+          <h2 className="admin-card-title">Events</h2>
           {loadingEvents ? (
             <p className="admin-meta">Loading...</p>
           ) : events.length === 0 ? (
             <p className="admin-meta">No events yet.</p>
           ) : (
-            <div className="admin-event-list">
-              {events.map(event => (
-                <div key={event.id} className="admin-event-row">
-                  <div className="admin-event-info">
-                    <span className="admin-event-name">{event.name}</span>
-                    <span className="admin-event-date">{event.date} · {event.time}</span>
+            <>
+              <div className="admin-event-list">
+                {events.slice(0, visibleCount).map(event => (
+                  <div key={event.id} className="admin-event-row">
+                    <div className="admin-event-info">
+                      <span className="admin-event-name">{event.name}</span>
+                      <span className="admin-event-date">{event.date} · {event.time}</span>
+                    </div>
+                    <EventImageManager
+                      event={event}
+                      onUpdate={updated => setEvents(prev => prev.map(e => e.id === updated.id ? updated : e))}
+                    />
                   </div>
-                  <EventImageManager
-                    event={event}
-                    onUpdate={updated => setEvents(prev => prev.map(e => e.id === updated.id ? updated : e))}
-                  />
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+              {visibleCount < events.length && (
+                <button
+                  className="btn-admin-ghost"
+                  onClick={() => setVisibleCount(prev => prev + 10)}
+                  style={{ marginTop: '1rem', width: '100%' }}
+                >
+                  Show More ({events.length - visibleCount} remaining)
+                </button>
+              )}
+            </>
           )}
-        </section>
-        <section className="admin-card">
-          <h2 className="admin-card-title">Gallery Photos</h2>
-          <GalleryUploader />
         </section>
       </div>
     </div>
