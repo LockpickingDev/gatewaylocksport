@@ -98,7 +98,7 @@ async function sendEventEmail(
       <div style="padding: 32px;">
         <p style="font-size: 16px; margin: 0 0 24px;">${greeting},</p>
         <p style="font-size: 16px; margin: 0 0 24px;">
-          You have an upcoming Gateway Locksport event in 3 days!
+          You have an upcoming Gateway Locksport event coming up soon!
         </p>
 
         <div style="background: #F4EFE4; border-left: 4px solid #C9A84C; padding: 20px 24px; margin: 0 0 24px; border-radius: 0 4px 4px 0;">
@@ -142,7 +142,7 @@ async function sendEventEmail(
     body: JSON.stringify({
       from: FROM_EMAIL,
       to,
-      subject: `Reminder: ${event.name} is in 3 days!`,
+      subject: `Reminder: ${event.name} is coming up soon!`,
       html
     })
   })

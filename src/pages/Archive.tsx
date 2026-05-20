@@ -12,10 +12,11 @@ function formatTime(time: string): string {
 
 export default function Archive() {
   const { events, loading, error } = useEvents()
-  const today = new Date()
+  const todayStr = new Date().toISOString().split('T')[0]
 
   const pastEvents = events
-    .filter(e => new Date(e.date + 'T12:00:00') < today)
+    .filter(e => e.date < todayStr)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   const byYear = pastEvents.reduce<Record<number, Event[]>>((acc, event) => {
     if (!acc[event.year]) acc[event.year] = []
@@ -84,17 +85,20 @@ function YearGroup({ year, events }: { year: number; events: Event[] }) {
 
 function ArchiveEventRow({ event }: { event: Event }) {
   const [expanded, setExpanded] = useState(false)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
   const d = new Date(event.date + 'T12:00:00')
   const formatted = d.toLocaleString('en-US', { month: 'short', day: 'numeric' })
   const longDesc = (event.description?.length ?? 0) > 120
 
   return (
+    <>
     <div className="archive-event">
       {event.imageUrl && (
         <img
           src={event.imageUrl}
           alt={event.name}
-          className="archive-event-thumb"
+          className="archive-event-thumb archive-event-thumb--clickable"
+          onClick={() => setLightboxOpen(true)}
         />
       )}
       <div className="archive-event-date">
@@ -125,6 +129,30 @@ function ArchiveEventRow({ event }: { event: Event }) {
         </div>
       )}
     </div>
+
+    {lightboxOpen && event.imageUrl && (
+      <div className="lightbox" onClick={() => setLightboxOpen(false)}>
+        <div className="lightbox-inner" onClick={e => e.stopPropagation()}>
+          <button className="lightbox-close" onClick={() => setLightboxOpen(false)} aria-label="Close">
+            <CloseIcon />
+          </button>
+          <img src={event.imageUrl} alt={event.name} />
+          <div className="lightbox-meta">
+            <span className="lightbox-caption">{event.name}</span>
+            <span className="lightbox-date">{formatted}, {event.year}</span>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
+  )
+}
+
+function CloseIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+    </svg>
   )
 }
 

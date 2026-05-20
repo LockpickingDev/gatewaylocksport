@@ -1,21 +1,29 @@
+import { useState, useRef, useEffect } from 'react'
 import type { Event } from '../types'
 import { useEvents } from '../hooks/useEvents'
 import './Home.css'
 
 export default function Home() {
   const { events, loading, error } = useEvents()
+  const videoRef = useRef<HTMLVideoElement>(null)
 
-  const today = new Date()
+  useEffect(() => {
+    if (videoRef.current) videoRef.current.playbackRate = 0.8
+  }, [])
+
+  const todayStr = new Date().toISOString().split('T')[0]
   const upcoming = events
-    .filter(e => new Date(e.date + 'T12:00:00') >= today)
+    .filter(e => e.date >= todayStr)
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 15)
 
   return (
     <div className="home">
       <section className="hero">
-        <div className="hero-img">
-          <img src="/Gateway-Locksport-Logo-PNG-white-no-words-black-keyhole.png" alt="" aria-hidden="true" />
+        <div className="hero-video">
+          <video ref={videoRef} autoPlay muted loop playsInline aria-hidden="true">
+            <source src="/GL Banner horizontal.mp4" type="video/mp4" />
+          </video>
         </div>
         <h1>Gateway Locksport</h1>
         <p className="hero-about">
@@ -56,34 +64,60 @@ function formatTime(time: string): string {
 }
 
 function EventCard({ event }: { event: Event }) {
+  const [lightboxOpen, setLightboxOpen] = useState(false)
   const d = new Date(event.date + 'T12:00:00')
   const dateStr = d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
   const timeStr = formatTime(event.time)
 
   return (
-    <div className={`event-card${event.imageUrl ? ' event-card--has-img' : ''}`}>
-      {event.imageUrl && (
-        <div className="event-card-img">
-          <img src={event.imageUrl} alt={event.name} />
+    <>
+      <div className={`event-card${event.imageUrl ? ' event-card--has-img' : ''}`}>
+        {event.imageUrl && (
+          <div className="event-card-img event-card-img--clickable" onClick={() => setLightboxOpen(true)}>
+            <img src={event.imageUrl} alt={event.name} />
+          </div>
+        )}
+        <div className="event-body">
+          <h3 className="event-name">{event.name}</h3>
+          <div className="event-meta">
+            <span className="event-datetime">{dateStr} · {timeStr}</span>
+            <a
+              className="event-location"
+              href={event.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <PinIcon />
+              {event.location}
+            </a>
+          </div>
+          <p className="event-desc">{event.description}</p>
+        </div>
+      </div>
+
+      {lightboxOpen && (
+        <div className="lightbox" onClick={() => setLightboxOpen(false)}>
+          <div className="lightbox-inner" onClick={e => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={() => setLightboxOpen(false)} aria-label="Close">
+              <CloseIcon />
+            </button>
+            <img src={event.imageUrl} alt={event.name} />
+            <div className="lightbox-meta">
+              <span className="lightbox-caption">{event.name}</span>
+              <span className="lightbox-date">{dateStr}</span>
+            </div>
+          </div>
         </div>
       )}
-      <div className="event-body">
-        <h3 className="event-name">{event.name}</h3>
-        <div className="event-meta">
-          <span className="event-datetime">{dateStr} · {timeStr}</span>
-          <a
-            className="event-location"
-            href={event.mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <PinIcon />
-            {event.location}
-          </a>
-        </div>
-        <p className="event-desc">{event.description}</p>
-      </div>
-    </div>
+    </>
+  )
+}
+
+function CloseIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+    </svg>
   )
 }
 

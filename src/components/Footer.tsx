@@ -13,7 +13,7 @@ export default function Footer() {
             <li><NavLink to="/calendar">Calendar</NavLink></li>
             <li><NavLink to="/gallery">Gallery</NavLink></li>
             <li><NavLink to="/archive">Archive</NavLink></li>
-            <li><NavLink to="/signup">Email List Signup</NavLink></li>
+<li><NavLink to="/signup">Email List Signup</NavLink></li>
           </ul>
         </div>
 
@@ -48,6 +48,13 @@ export default function Footer() {
           </p>
         </div>
 
+      </div>
+
+      <div className="footer-support">
+        <span className="footer-support-text">
+          Love what we do? Support the club with a cash donation to Dev at any meetup, or donate via Venmo
+          {/* TODO: enable when Venmo Business is live — href="https://venmo.com/u/GatewayLocksport" */}.
+        </span>
       </div>
 
       <div className="footer-bottom">

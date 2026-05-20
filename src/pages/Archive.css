@@ -4,7 +4,7 @@
 
 .archive-hero {
   background: #0F0E0C;
-  padding: 3rem 2rem 2.5rem;
+  padding: 1.75rem 2rem 1.5rem;
   border-bottom: 2px solid #b87d0e;
 }
 
@@ -90,6 +90,15 @@
   object-fit: cover;
   border-radius: 4px;
   flex-shrink: 0;
+}
+
+.archive-event-thumb--clickable {
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.archive-event-thumb--clickable:hover {
+  transform: scale(1.04);
 }
 
 .archive-event:last-child {
@@ -213,7 +222,7 @@
 
 @media (max-width: 480px) {
   .archive-hero {
-    padding: 2rem 1.25rem 1.75rem;
+    padding: 1.25rem 1.25rem 1rem;
   }
 
   .archive-section {

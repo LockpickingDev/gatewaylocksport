@@ -16,7 +16,7 @@ export default function NavBar() {
         <NavLink to="/calendar" className={({ isActive }) => isActive ? 'active' : ''}>Calendar</NavLink>
         <NavLink to="/gallery" className={({ isActive }) => isActive ? 'active' : ''}>Gallery</NavLink>
         <NavLink to="/archive" className={({ isActive }) => isActive ? 'active' : ''}>Archive</NavLink>
-        <NavLink to="/signup" className={({ isActive }) => isActive ? 'active' : ''}>Email List</NavLink>
+<NavLink to="/signup" className={({ isActive }) => isActive ? 'active' : ''}>Email List</NavLink>
       </nav>
 
       <button
@@ -36,7 +36,7 @@ export default function NavBar() {
           <NavLink to="/calendar" onClick={() => setMenuOpen(false)}>Calendar</NavLink>
           <NavLink to="/gallery" onClick={() => setMenuOpen(false)}>Gallery</NavLink>
           <NavLink to="/archive" onClick={() => setMenuOpen(false)}>Archive</NavLink>
-          <NavLink to="/signup" onClick={() => setMenuOpen(false)}>Email List</NavLink>
+<NavLink to="/signup" onClick={() => setMenuOpen(false)}>Email List</NavLink>
         </nav>
       )}
     </header>

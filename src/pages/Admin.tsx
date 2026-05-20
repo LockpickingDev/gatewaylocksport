@@ -161,9 +161,17 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
     setSubmitting(true)
     try {
       const year = parseInt(form.date.split('-')[0])
-      const emailDate = new Date(form.date + 'T12:00:00')
-      emailDate.setDate(emailDate.getDate() - 3)
-      const emailSendDate = emailDate.toISOString().split('T')[0]
+      const now = new Date()
+      const eventDate = new Date(form.date + 'T12:00:00')
+      const reminderDate = new Date(eventDate)
+      reminderDate.setDate(reminderDate.getDate() - 3)
+      let emailSendDate = ''
+      if (eventDate > now) {
+        // If 3-day reminder is already past, send today so the cron catches it on next run
+        emailSendDate = reminderDate > now
+          ? reminderDate.toISOString().split('T')[0]
+          : now.toISOString().split('T')[0]
+      }
 
       let imageUrl = ''
       let imageName = ''
@@ -196,9 +204,10 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
         description: form.description
       })
 
+      const emailNote = emailSendDate ? ' · Reminder email queued for ' + emailSendDate : ' · No reminder email (past event)'
       const calendarMsg = calendarSuccess
-        ? 'Event created · Calendar updated · Reminder email queued for ' + emailSendDate
-        : 'Event saved · Calendar push failed — check console · Email queued for ' + emailSendDate
+        ? 'Event created · Calendar updated' + emailNote
+        : 'Event saved · Calendar push failed — check console' + emailNote
 
       setSuccessMsg(calendarMsg)
       setForm({ name: '', date: '', time: '18:00', location: '', mapsUrl: '', description: '' })
