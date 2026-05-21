@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { GoogleAuth } from 'google-auth-library'
-import { verifyAdmin } from './_auth'
+import { verifyAdmin } from './_auth.js'
 
 const CALENDAR_ID = 'GatewayLocksport@gmail.com'
 
