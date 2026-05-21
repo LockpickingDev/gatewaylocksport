@@ -13,6 +13,7 @@ export default function Footer() {
             <li><NavLink to="/calendar">Calendar</NavLink></li>
             <li><NavLink to="/gallery">Gallery</NavLink></li>
             <li><NavLink to="/archive">Archive</NavLink></li>
+            <li><NavLink to="/products">Products</NavLink></li>
 <li><NavLink to="/signup">Email List Signup</NavLink></li>
           </ul>
         </div>
