@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import './Products.css'
 
 interface Product {
@@ -12,47 +13,53 @@ interface Product {
 const PRODUCTS: Product[] = [
   {
     id: '1',
-    name: 'Product Name 1',
-    description: 'A short description of this product and what makes it great for locksport enthusiasts.',
-    price: '$0.00',
-    imageUrl: '',
+    name: 'Practice Lock Kit',
+    description: 'Everything you need to get started with locksport.  Includes a grubbed mortise cylinder for easy repinning, pin kit with spools and serrated security pins, precut keys, pinning tray, plug follower, and plug holder.',
+    price: '$50.00',
+    imageUrl: '/products/Practice Lock Kit 1916.jpg',
     productUrl: '#'
   },
   {
     id: '2',
-    name: 'Product Name 2',
-    description: 'A short description of this product and what makes it great for locksport enthusiasts.',
-    price: '$0.00',
-    imageUrl: '',
-    productUrl: '#'
+    name: 'Covert Instruments FNG (0.025")',
+    description: '',
+    price: '$15.00',
+    imageUrl: '/products/FNG 1916.jpg',
+    productUrl: ''
+    //productUrl: 'https://covertinstruments.com/products/the-fng'
   },
   {
     id: '3',
-    name: 'Product Name 3',
-    description: 'A short description of this product and what makes it great for locksport enthusiasts.',
-    price: '$0.00',
-    imageUrl: '',
-    productUrl: '#'
+    name: 'Covert Instruments Genesis Pick Set (0.025")',
+    description: '',
+    price: '$30.00',
+    imageUrl: '/products/CI Genesis.JPG',
+    productUrl: ''
+    //productUrl: 'https://covertinstruments.com/products/genesis-lock-pick'
   },
   {
     id: '4',
-    name: 'Product Name 4',
-    description: 'A short description of this product and what makes it great for locksport enthusiasts.',
-    price: '$0.00',
-    imageUrl: '',
-    productUrl: '#'
+    name: 'Jimy Longs Basics Set v5.0 (0.019")',
+    description: '',
+    price: '$25.00',
+    imageUrl: '/products/Jimy Basics.JPG',
+    productUrl: ''
+    //productUrl: 'https://jimylongs.com/products/basics-set-v5-0-019'
   },
   {
     id: '5',
-    name: 'Product Name 5',
-    description: 'A short description of this product and what makes it great for locksport enthusiasts.',
-    price: '$0.00',
-    imageUrl: '',
-    productUrl: '#'
-  }
+    name: 'Jimy Longs Intermediate Set v5.0 (0.019")',
+    description: '',
+    price: '$35.00',
+    imageUrl: '/products/Jimy Intermediate.JPG',
+    productUrl: ''
+    //productUrl: 'https://jimylongs.com/products/intermediate-set-v5-0-019'
+  }  
 ]
 
 export default function Products() {
+  const [lightboxProduct, setLightboxProduct] = useState<Product | null>(null)
+
   return (
     <div className="products-page">
       <section className="products-hero">
@@ -78,18 +85,35 @@ export default function Products() {
 
         <div className="products-grid">
           {PRODUCTS.map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} onImageClick={() => setLightboxProduct(product)} />
           ))}
         </div>
       </section>
+
+      {lightboxProduct && (
+        <div className="lightbox" onClick={() => setLightboxProduct(null)}>
+          <div className="lightbox-inner" onClick={e => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={() => setLightboxProduct(null)} aria-label="Close">
+              <CloseIcon />
+            </button>
+            <img src={lightboxProduct.imageUrl} alt={lightboxProduct.name} />
+            <div className="lightbox-meta">
+              <span className="lightbox-caption">{lightboxProduct.name}</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product, onImageClick }: { product: Product; onImageClick: () => void }) {
   return (
     <div className="product-card">
-      <div className="product-img">
+      <div
+        className={`product-img${product.imageUrl ? ' product-img-clickable' : ''}`}
+        onClick={product.imageUrl ? onImageClick : undefined}
+      >
         {product.imageUrl
           ? <img src={product.imageUrl} alt={product.name} />
           : <div className="product-img-placeholder"><LockIcon /></div>
@@ -111,6 +135,14 @@ function ProductCard({ product }: { product: Product }) {
         )}
       </div>
     </div>
+  )
+}
+
+function CloseIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+    </svg>
   )
 }
 
