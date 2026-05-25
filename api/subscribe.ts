@@ -1,10 +1,15 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { initializeApp, cert, getApps } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
+import { randomUUID } from 'crypto'
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY
 const FROM_EMAIL = 'Gateway Locksport <events@gatewaylocksport.com>'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://gatewaylocksport.com'
+
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/
+const MAX_EMAIL_LENGTH = 254
+const MAX_ALIAS_LENGTH = 50
 
 function initFirebaseAdmin() {
   if (getApps().length > 0) return
@@ -18,45 +23,83 @@ function initFirebaseAdmin() {
   })
 }
 
+function sanitizeAlias(alias: string): string {
+  return alias.replace(/[<>"'&;\\]/g, '').trim().slice(0, MAX_ALIAS_LENGTH)
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { email, nameAlias, token } = req.body ?? {}
+  const body = req.body ?? {}
+  const { email, nameAlias } = body
 
-  if (!email || !token || typeof email !== 'string' || typeof token !== 'string') {
-    return res.status(400).json({ error: 'Missing required fields' })
+  if (!email || typeof email !== 'string') {
+    return res.status(400).json({ error: 'Email is required' })
   }
 
   const normalizedEmail = email.toLowerCase().trim()
+
+  if (normalizedEmail.length > MAX_EMAIL_LENGTH || !EMAIL_REGEX.test(normalizedEmail)) {
+    return res.status(400).json({ error: 'Invalid email address' })
+  }
+
+  const sanitizedAlias = typeof nameAlias === 'string' ? sanitizeAlias(nameAlias) : ''
 
   try {
     initFirebaseAdmin()
     const db = getFirestore()
 
-    // Verify this email+token combination exists as an unconfirmed subscriber
-    // before sending, to prevent this endpoint from being used to spam arbitrary addresses.
-    const snapshot = await db
+    const existingSnapshot = await db
       .collection('Subscribers')
       .where('email', '==', normalizedEmail)
-      .where('token', '==', token)
-      .where('confirmed', '==', false)
       .limit(1)
       .get()
 
-    if (snapshot.empty) {
-      return res.status(404).json({ error: 'No matching unconfirmed subscriber found' })
+    if (!existingSnapshot.empty) {
+      const existing = existingSnapshot.docs[0].data()
+      if (existing.confirmed) {
+        return res.status(409).json({ error: 'This email is already subscribed' })
+      }
+      return res.status(200).json({
+        pending: true,
+        message: 'A confirmation email was already sent. Please check your inbox.'
+      })
     }
 
-    const subscriberData = snapshot.docs[0].data()
-    const greeting = nameAlias ? `Hi ${nameAlias}` : 'Hi there'
-    const confirmUrl = `${BASE_URL}/confirm?token=${encodeURIComponent(token)}`
-    const unsubscribeUrl = subscriberData.unsubscribeToken
-      ? `${BASE_URL}/unsubscribe?token=${encodeURIComponent(subscriberData.unsubscribeToken)}`
-      : null
+    const token = randomUUID()
+    const unsubscribeToken = randomUUID()
 
-    const html = `
+    await db.collection('Subscribers').add({
+      nameAlias: sanitizedAlias,
+      email: normalizedEmail,
+      subscribedAt: new Date().toISOString().split('T')[0],
+      confirmed: false,
+      token,
+      unsubscribeToken
+    })
+
+    await sendConfirmationEmail(normalizedEmail, sanitizedAlias, token, unsubscribeToken)
+
+    return res.status(200).json({ success: true })
+  } catch (err) {
+    console.error('Subscribe error:', err)
+    return res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
+async function sendConfirmationEmail(
+  email: string,
+  nameAlias: string,
+  token: string,
+  unsubscribeToken: string
+): Promise<void> {
+  const greeting = nameAlias ? `Hi ${nameAlias}` : 'Hi there'
+  const confirmUrl = `${BASE_URL}/confirm?token=${encodeURIComponent(token)}`
+  const unsubscribeUrl = `${BASE_URL}/unsubscribe?token=${encodeURIComponent(unsubscribeToken)}`
+
+  const html = `
     <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; color: #0F0E0C;">
       <div style="background: #0F0E0C; padding: 24px 32px; border-bottom: 3px solid #C9A84C;">
         <h1 style="font-family: Arial, sans-serif; color: #C9A84C; font-size: 22px; margin: 0; letter-spacing: 0.08em; text-transform: uppercase;">
@@ -88,36 +131,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         <p style="font-size: 12px; color: #555248; margin: 0;">
           &copy; ${new Date().getFullYear()} Gateway Locksport &middot; St. Louis, MO
         </p>
-        ${unsubscribeUrl ? `<p style="font-size: 11px; color: #555248; margin: 8px 0 0;">
+        <p style="font-size: 11px; color: #555248; margin: 8px 0 0;">
           <a href="${unsubscribeUrl}" style="color: #888780; text-decoration: underline;">Unsubscribe</a>
-        </p>` : ''}
+        </p>
       </div>
     </div>
   `
 
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: FROM_EMAIL,
-        to: normalizedEmail,
-        subject: 'Confirm your Gateway Locksport subscription',
-        html
-      })
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      from: FROM_EMAIL,
+      to: email,
+      subject: 'Confirm your Gateway Locksport subscription',
+      html
     })
+  })
 
-    if (!response.ok) {
-      const err = await response.json()
-      console.error('Resend error:', err)
-      return res.status(500).json({ error: 'Failed to send confirmation email' })
-    }
-
-    return res.status(200).json({ success: true })
-  } catch (err) {
-    console.error('Send confirmation error:', err)
-    return res.status(500).json({ error: 'Internal server error' })
+  if (!response.ok) {
+    const err = await response.json()
+    throw new Error(`Resend error: ${JSON.stringify(err)}`)
   }
 }

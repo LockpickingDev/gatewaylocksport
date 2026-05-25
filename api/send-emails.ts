@@ -1,9 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { initializeApp, cert, getApps } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
+import { verifyAdmin } from './_auth'
 
+const CRON_SECRET = process.env.CRON_SECRET
 const RESEND_API_KEY = process.env.RESEND_API_KEY
 const FROM_EMAIL = 'Gateway Locksport <events@gatewaylocksport.com>'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://gatewaylocksport.com'
 
 function initFirebaseAdmin() {
   if (getApps().length > 0) return
@@ -18,8 +21,15 @@ function initFirebaseAdmin() {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'POST' && req.method !== 'GET') {
+  if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
+  }
+
+  const authHeader = req.headers.authorization
+  const isCron = CRON_SECRET && authHeader === `Bearer ${CRON_SECRET}`
+  const isAdmin = isCron || await verifyAdmin(req)
+  if (!isAdmin) {
+    return res.status(401).json({ error: 'Unauthorized' })
   }
 
   try {
@@ -59,7 +69,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.log('Sending emails for event:', event.name)
 
       const emailPromises = subscribers.map(subscriber =>
-        sendEventEmail(subscriber.email, subscriber.nameAlias , event)
+        sendEventEmail(subscriber.email, subscriber.nameAlias, subscriber.unsubscribeToken, event)
       )
 
       const emailResults = await Promise.allSettled(emailPromises)
@@ -82,10 +92,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
 async function sendEventEmail(
   to: string,
-  nameAlias : string,
+  nameAlias: string,
+  unsubscribeToken: string | undefined,
   event: any
 ): Promise<void> {
-  const greeting = nameAlias  ? `Hi ${nameAlias }` : 'Hi there'
+  const greeting = nameAlias ? `Hi ${nameAlias}` : 'Hi there'
+  const unsubscribeUrl = unsubscribeToken
+    ? `${BASE_URL}/unsubscribe?token=${encodeURIComponent(unsubscribeToken)}`
+    : null
 
   const html = `
     <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; color: #0F0E0C;">
@@ -127,8 +141,11 @@ async function sendEventEmail(
 
       <div style="background: #0F0E0C; padding: 16px 32px; text-align: center;">
         <p style="font-size: 12px; color: #555248; margin: 0;">
-          © ${new Date().getFullYear()} Gateway Locksport · St. Louis, MO
+          &copy; ${new Date().getFullYear()} Gateway Locksport &middot; St. Louis, MO
         </p>
+        ${unsubscribeUrl ? `<p style="font-size: 11px; color: #555248; margin: 8px 0 0;">
+          <a href="${unsubscribeUrl}" style="color: #888780; text-decoration: underline;">Unsubscribe</a>
+        </p>` : ''}
       </div>
     </div>
   `

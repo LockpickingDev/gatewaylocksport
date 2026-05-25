@@ -8,6 +8,7 @@ import Gallery from './pages/Gallery'
 import Archive from './pages/Archive'
 import Signup from './pages/Signup'
 import Confirm from './pages/Confirm'
+import Unsubscribe from './pages/Unsubscribe'
 import Admin from './pages/Admin'
 import Products from './pages/Products'
 import './App.css'
@@ -31,6 +32,7 @@ function App() {
           <Route path="/archive" element={<Archive />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/confirm" element={<Confirm />} />
+          <Route path="/unsubscribe" element={<Unsubscribe />} />
           <Route path="/products" element={<Products />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<Navigate to="/" replace />} />
