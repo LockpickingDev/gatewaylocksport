@@ -3,6 +3,7 @@ import { initializeApp, cert, getApps } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
 import { verifyAdmin } from './_auth'
 
+const CRON_SECRET = process.env.CRON_SECRET
 const RESEND_API_KEY = process.env.RESEND_API_KEY
 const FROM_EMAIL = 'Gateway Locksport <events@gatewaylocksport.com>'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://gatewaylocksport.com'
@@ -24,7 +25,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const isAdmin = await verifyAdmin(req)
+  const authHeader = req.headers.authorization
+  const isCron = CRON_SECRET && authHeader === `Bearer ${CRON_SECRET}`
+  const isAdmin = isCron || await verifyAdmin(req)
   if (!isAdmin) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
