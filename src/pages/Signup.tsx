@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { collection, addDoc } from 'firebase/firestore'
-import { db } from '../lib/firebase'
 import './Signup.css'
 
 interface FormState {
@@ -14,15 +12,21 @@ interface FormErrors {
   captcha?: string
 }
 
+const MAX_ALIAS_LENGTH = 50
+
 export default function Signup() {
   const [form, setForm] = useState<FormState>({ nameAlias: '', email: '' })
   const [errors, setErrors] = useState<FormErrors>({})
   const [captchaChecked, setCaptchaChecked] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [alreadyPending, setAlreadyPending] = useState(false)
   const [loading, setLoading] = useState(false)
 
   function validate(): FormErrors {
     const errs: FormErrors = {}
+    if (form.nameAlias.length > MAX_ALIAS_LENGTH) {
+      errs.nameAlias = `Alias must be ${MAX_ALIAS_LENGTH} characters or fewer`
+    }
     if (!form.email.trim()) {
       errs.email = 'Email address is required'
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
@@ -49,28 +53,33 @@ export default function Signup() {
     }
     setLoading(true)
     try {
-      const token = crypto.randomUUID()
-      await addDoc(collection(db, 'Subscribers'), {
-        nameAlias: form.nameAlias || '',
-        email: form.email.toLowerCase().trim(),
-        subscribedAt: new Date().toISOString().split('T')[0],
-        confirmed: false,
-        token
-      })
-
-      await fetch('/api/send-confirmation', {
+      const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: form.email.toLowerCase().trim(),
-          nameAlias: form.nameAlias || '',
-          token
+          email: form.email,
+          nameAlias: form.nameAlias
         })
       })
 
+      const data = await response.json()
+
+      if (response.status === 409) {
+        setErrors({ email: 'This email is already subscribed.' })
+        return
+      }
+
+      if (!response.ok) {
+        setErrors({ email: data.error || 'Something went wrong. Please try again.' })
+        return
+      }
+
+      if (data.pending) {
+        setAlreadyPending(true)
+      }
+
       setSubmitted(true)
-    } catch (err) {
-      console.error('Signup error:', err)
+    } catch {
       setErrors({ email: 'Something went wrong. Please try again.' })
     } finally {
       setLoading(false)
@@ -88,8 +97,12 @@ export default function Signup() {
           <div className="signup-card">
             <div className="success-state">
               <CheckIcon />
-              <h2>Almost there!</h2>
-              <p>Check your inbox for a confirmation email and click the link inside to complete your signup.</p>
+              <h2>{alreadyPending ? 'Check your inbox' : 'Almost there!'}</h2>
+              <p>
+                {alreadyPending
+                  ? 'A confirmation email was already sent to that address. Please check your inbox and click the link to confirm.'
+                  : 'Check your inbox for a confirmation email and click the link inside to complete your signup.'}
+              </p>
             </div>
           </div>
           <p className="signup-footer-note">
@@ -124,6 +137,7 @@ export default function Signup() {
                 onChange={handleChange}
                 placeholder="Alias"
                 autoComplete="given-name"
+                maxLength={MAX_ALIAS_LENGTH}
                 aria-describedby={errors.nameAlias ? 'nameAlias-error' : undefined}
               />
               {errors.nameAlias && (
