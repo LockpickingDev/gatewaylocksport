@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Event } from '../types'
 import { useEvents } from '../hooks/useEvents'
+import SEO from '../components/SEO'
 import './Archive.css'
 
 function formatTime(time: string): string {
@@ -32,6 +33,11 @@ export default function Archive() {
 
   return (
     <div className="archive">
+      <SEO
+        title="Past Events"
+        description="A history of Gateway Locksport meetups in St. Louis and St. Charles, Missouri. Browse our past events going back to our founding."
+        canonical="/archive"
+      />
       <section className="archive-hero">
         <div className="section-label">History</div>
         <div className="section-title">Past Events</div>

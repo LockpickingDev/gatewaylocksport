@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
+import SEO from '../components/SEO'
 import './Confirm.css'
 
 export default function Confirm() {
@@ -37,6 +38,7 @@ export default function Confirm() {
 
   return (
     <div className="confirm-page">
+      <SEO title="Confirm Subscription" canonical="/confirm" noindex />
       <div className="confirm-card">
         {status === 'loading' && (
           <>

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /confirm
+Disallow: /unsubscribe
+Disallow: /api/
+
+Sitemap: https://gatewaylocksport.com/sitemap.xml

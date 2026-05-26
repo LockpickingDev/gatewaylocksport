@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
+import SEO from '../components/SEO'
 import './Confirm.css'
 
 export default function Unsubscribe() {
@@ -36,6 +37,7 @@ export default function Unsubscribe() {
 
   return (
     <div className="confirm-page">
+      <SEO title="Unsubscribe" canonical="/unsubscribe" noindex />
       <div className="confirm-card">
         {status === 'loading' && (
           <>

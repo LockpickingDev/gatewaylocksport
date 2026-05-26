@@ -8,6 +8,7 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage
 import { storage } from '../lib/firebase'
 import type { GalleryPhoto } from '../types'
 import type { Event } from '../types'
+import SEO from '../components/SEO'
 import './Admin.css'
 
 const ALLOWED_EMAIL = 'gatewaylocksport@gmail.com'
@@ -87,6 +88,7 @@ export default function Admin() {
 
   return (
     <div className="admin-page">
+      <SEO title="Admin" canonical="/admin" noindex />
       <AdminDashboard
         userEmail={userEmail}
         onSignOut={handleSignOut}
