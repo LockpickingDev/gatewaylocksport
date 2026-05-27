@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { initializeApp, cert, getApps } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
-import { verifyAdmin } from './_auth.js'
+import { getAuth } from 'firebase-admin/auth'
 
 const CRON_SECRET = process.env.CRON_SECRET
 const RESEND_API_KEY = process.env.RESEND_API_KEY
@@ -21,13 +21,22 @@ function initFirebaseAdmin() {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'POST') {
+  if (req.method !== 'POST' && req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
   const authHeader = req.headers.authorization
   const isCron = CRON_SECRET && authHeader === `Bearer ${CRON_SECRET}`
-  const isAdmin = isCron || await verifyAdmin(req)
+  let isAdmin = isCron
+  if (!isAdmin && authHeader?.startsWith('Bearer ')) {
+    try {
+      initFirebaseAdmin()
+      const decoded = await getAuth().verifyIdToken(authHeader.slice(7))
+      isAdmin = decoded.email === 'gatewaylocksport@gmail.com'
+    } catch {
+      isAdmin = false
+    }
+  }
   if (!isAdmin) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
