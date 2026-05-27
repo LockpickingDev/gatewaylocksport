@@ -8,7 +8,7 @@ interface SEOProps {
 }
 
 const SITE_NAME = 'Gateway Locksport'
-const DEFAULT_TITLE = 'Gateway Locksport — St. Louis Locksport Club'
+const DEFAULT_TITLE = 'Gateway Locksport - St. Louis Locksport Club'
 const DEFAULT_DESC = 'Gateway Locksport is a free, welcoming community for lock sport enthusiasts in the St. Louis area. We host monthly meetups open to all skill levels.'
 const OG_IMAGE = 'https://gatewaylocksport.com/GL-Site-Preview-Banner.jpg'
 const BASE_URL = 'https://gatewaylocksport.com'
