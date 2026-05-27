@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import SEO from '../components/SEO'
 import './Signup.css'
 
 interface FormState {
@@ -89,6 +90,11 @@ export default function Signup() {
   if (submitted) {
     return (
       <div className="signup-page">
+        <SEO
+          title="Email List Signup"
+          description="Sign up for Gateway Locksport email updates and be the first to hear about upcoming lockpicking meetups in St. Louis and St. Charles, Missouri."
+          canonical="/signup"
+        />
         <section className="signup-hero">
           <div className="section-label">Stay Connected</div>
           <div className="section-title">Email List Signup</div>
@@ -115,6 +121,11 @@ export default function Signup() {
 
   return (
     <div className="signup-page">
+      <SEO
+        title="Email List Signup"
+        description="Sign up for Gateway Locksport email updates and be the first to hear about upcoming lockpicking meetups in St. Louis and St. Charles, Missouri."
+        canonical="/signup"
+      />
       <section className="signup-hero">
         <div className="section-label">Stay Connected</div>
         <div className="section-title">Email List Signup</div>

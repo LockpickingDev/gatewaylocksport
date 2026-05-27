@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import SEO from '../components/SEO'
 import './Products.css'
 
 interface Product {
@@ -62,6 +63,11 @@ export default function Products() {
 
   return (
     <div className="products-page">
+      <SEO
+        title="Products & Gear"
+        description="Shop lockpicking tools and gear at Gateway Locksport meetups. We carry picks from Covert Instruments and Jimy Longs, plus our own beginner practice lock kits."
+        canonical="/products"
+      />
       <section className="products-hero">
         <div className="section-label">Gear & Merch</div>
         <div className="section-title">Products</div>

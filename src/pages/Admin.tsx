@@ -8,6 +8,7 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage
 import { storage } from '../lib/firebase'
 import type { GalleryPhoto } from '../types'
 import type { Event } from '../types'
+import SEO from '../components/SEO'
 import './Admin.css'
 
 const ALLOWED_EMAIL = 'gatewaylocksport@gmail.com'
@@ -87,6 +88,7 @@ export default function Admin() {
 
   return (
     <div className="admin-page">
+      <SEO title="Admin" canonical="/admin" noindex />
       <AdminDashboard
         userEmail={userEmail}
         onSignOut={handleSignOut}
@@ -605,6 +607,7 @@ function GalleryUploader() {
   const [editingCaption, setEditingCaption] = useState<Record<string, string>>({})
   const [editingId, setEditingId] = useState<string | null>(null)
   const [savingCaption, setSavingCaption] = useState(false)
+  const [visiblePhotosCount, setVisiblePhotosCount] = useState(15)
 
   useEffect(() => {
     fetchGalleryPhotos()
@@ -773,8 +776,9 @@ function GalleryUploader() {
         ) : existingPhotos.length === 0 ? (
           <p className="admin-meta">No photos uploaded yet.</p>
         ) : (
+          <>
           <div className="gallery-admin-grid">
-            {existingPhotos.map(photo => (
+            {existingPhotos.slice(0, visiblePhotosCount).map(photo => (
               <div key={photo.id} className="gallery-admin-item">
                 <img src={photo.url} alt={photo.caption || 'gallery photo'} />
 
@@ -837,6 +841,16 @@ function GalleryUploader() {
               </div>
             ))}
           </div>
+          {visiblePhotosCount < existingPhotos.length && (
+            <button
+              className="btn-admin-ghost"
+              onClick={() => setVisiblePhotosCount(prev => prev + 15)}
+              style={{ marginTop: '1rem', width: '100%' }}
+            >
+              Show More ({existingPhotos.length - visiblePhotosCount} remaining)
+            </button>
+          )}
+          </>
         )}
       </div>
     </div>

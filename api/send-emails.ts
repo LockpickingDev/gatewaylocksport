@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { initializeApp, cert, getApps } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
-import { verifyAdmin } from './_auth'
+import { verifyAdmin } from './_auth.js'
 
 const CRON_SECRET = process.env.CRON_SECRET
 const RESEND_API_KEY = process.env.RESEND_API_KEY

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { collection, query, orderBy, getDocs } from 'firebase/firestore'
 import { db } from '../lib/firebase'
 import type { GalleryPhoto } from '../types'
+import SEO from '../components/SEO'
 import './Gallery.css'
 
 export default function Gallery() {
@@ -45,6 +46,11 @@ export default function Gallery() {
 
   return (
     <div className="gallery-page">
+      <SEO
+        title="Photo Gallery"
+        description="Browse photos from Gateway Locksport meetups and events. See the St. Louis lockpicking community in action."
+        canonical="/gallery"
+      />
       <section className="gallery-hero">
         <div className="section-label">Community</div>
         <div className="section-title">Photo Gallery</div>

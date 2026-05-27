@@ -1,7 +1,24 @@
 import { useState, useRef, useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 import type { Event } from '../types'
 import { useEvents } from '../hooks/useEvents'
+import SEO from '../components/SEO'
 import './Home.css'
+
+const ORG_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Gateway Locksport',
+  url: 'https://gatewaylocksport.com',
+  logo: 'https://gatewaylocksport.com/Gateway-Locksport-Logo-PNG-white-no-words.png',
+  description: 'A free, welcoming community for lock sport enthusiasts in the St. Louis area. Free monthly meetups in St. Louis and St. Charles, Missouri.',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'St. Louis',
+    addressRegion: 'MO',
+    addressCountry: 'US',
+  },
+}
 
 export default function Home() {
   const { events, loading, error } = useEvents()
@@ -19,6 +36,10 @@ export default function Home() {
 
   return (
     <div className="home">
+      <SEO canonical="/" />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(ORG_SCHEMA)}</script>
+      </Helmet>
       <section className="hero">
         <div className="hero-video">
           <video ref={videoRef} autoPlay muted loop playsInline aria-hidden="true">

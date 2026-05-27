@@ -1,8 +1,14 @@
+import SEO from '../components/SEO'
 import './Calendar.css'
 
 export default function Calendar() {
   return (
     <div className="calendar-page">
+      <SEO
+        title="Event Calendar"
+        description="View the Gateway Locksport event calendar. We host free monthly lockpicking meetups in St. Louis and St. Charles, Missouri — open to all skill levels."
+        canonical="/calendar"
+      />
       <section className="calendar-hero">
         <div className="section-label">Schedule</div>
         <div className="section-title">Event Calendar</div>
