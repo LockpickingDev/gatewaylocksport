@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { initializeApp, cert, getApps } from 'firebase-admin/app'
-import { getFirestore } from 'firebase-admin/firestore'
+import { getFirestore, FieldValue } from 'firebase-admin/firestore'
 import { getAuth } from 'firebase-admin/auth'
 
 const CRON_SECRET = process.env.CRON_SECRET
@@ -46,16 +46,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const db = getFirestore()
 
     const today = new Date().toISOString().split('T')[0]
-    console.log('Checking for events with emailSendDate:', today)
+    console.log('Checking for upcoming events with emailSendDate <=', today)
 
     const eventsSnapshot = await db
       .collection('Events')
-      .where('emailSendDate', '==', today)
+      .where('date', '>=', today)
       .get()
 
-    if (eventsSnapshot.empty) {
-      console.log('No events to send today')
-      return res.status(200).json({ message: 'No events to send today' })
+    const eventsToProcess = eventsSnapshot.docs.filter(doc => {
+      const data = doc.data()
+      return data.emailSendDate && data.emailSendDate <= today
+    })
+
+    if (eventsToProcess.length === 0) {
+      console.log('No events to process today')
+      return res.status(200).json({ message: 'No events to process today' })
     }
 
     const subscribersSnapshot = await db
@@ -69,27 +74,40 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const subscribers = subscribersSnapshot.docs.map(doc => doc.data())
-    console.log(`Found ${subscribers.length} subscribers`)
+    console.log(`Found ${subscribers.length} confirmed subscribers`)
 
     const results = []
 
-    for (const eventDoc of eventsSnapshot.docs) {
+    for (const eventDoc of eventsToProcess) {
       const event = eventDoc.data()
-      console.log('Sending emails for event:', event.name)
+      const emailsSentTo: string[] = event.emailsSentTo || []
+      const pending = subscribers.filter(s => !emailsSentTo.includes(s.email))
 
-      const emailPromises = subscribers.map(subscriber =>
-        sendEventEmail(subscriber.email, subscriber.nameAlias, subscriber.unsubscribeToken, event)
+      console.log(`Event "${event.name}": ${pending.length} new subscribers to email`)
+
+      if (pending.length === 0) {
+        results.push({ event: event.name, succeeded: 0, failed: 0 })
+        continue
+      }
+
+      const emailResults = await Promise.allSettled(
+        pending.map(s => sendEventEmail(s.email, s.nameAlias, s.unsubscribeToken, event))
       )
 
-      const emailResults = await Promise.allSettled(emailPromises)
       const succeeded = emailResults.filter(r => r.status === 'fulfilled').length
       const failed = emailResults.filter(r => r.status === 'rejected').length
 
-      results.push({
-        event: event.name,
-        succeeded,
-        failed
-      })
+      const successfulEmails = pending
+        .filter((_, i) => emailResults[i].status === 'fulfilled')
+        .map(s => s.email)
+
+      if (successfulEmails.length > 0) {
+        await eventDoc.ref.update({
+          emailsSentTo: FieldValue.arrayUnion(...successfulEmails)
+        })
+      }
+
+      results.push({ event: event.name, succeeded, failed })
     }
 
     return res.status(200).json({ success: true, results })
