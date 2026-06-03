@@ -6,6 +6,7 @@ import { auth, googleProvider, db } from '../lib/firebase'
 import { pushToGoogleCalendar, deleteFromGoogleCalendar } from '../lib/calendar'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 import { storage } from '../lib/firebase'
+import { compressImage } from '../lib/compressImage'
 import type { GalleryPhoto } from '../types'
 import type { Event } from '../types'
 import SEO from '../components/SEO'
@@ -179,9 +180,10 @@ function AdminDashboard({ userEmail, onSignOut }: { userEmail: string; onSignOut
       let imageUrl = ''
       let imageName = ''
       if (imageFile) {
-        imageName = `events/${Date.now()}-${imageFile.name}`
+        const compressed = await compressImage(imageFile)
+        imageName = `events/${Date.now()}-${compressed.name}`
         const storageRef = ref(storage, imageName)
-        await uploadBytes(storageRef, imageFile)
+        await uploadBytes(storageRef, compressed)
         imageUrl = await getDownloadURL(storageRef)
       }
 
@@ -459,9 +461,10 @@ function EventImageManager({ event, onUpdate }: { event: Event; onUpdate: (updat
       if (event.imageName) {
         try { await deleteObject(ref(storage, event.imageName)) } catch {}
       }
-      const imageName = `events/${Date.now()}-${imageFile.name}`
+      const compressed = await compressImage(imageFile)
+      const imageName = `events/${Date.now()}-${compressed.name}`
       const storageRef = ref(storage, imageName)
-      await uploadBytes(storageRef, imageFile)
+      await uploadBytes(storageRef, compressed)
       const imageUrl = await getDownloadURL(storageRef)
       await updateDoc(doc(db, 'Events', event.id), { imageUrl, imageName })
       onUpdate({ ...event, imageUrl, imageName })
@@ -645,7 +648,7 @@ function GalleryUploader() {
       const year = new Date().getFullYear()
 
       for (let i = 0; i < selectedFiles.length; i++) {
-        const file = selectedFiles[i]
+        const file = await compressImage(selectedFiles[i])
         const fileName = `gallery/${Date.now()}-${file.name}`
         const storageRef = ref(storage, fileName)
         await uploadBytes(storageRef, file)
