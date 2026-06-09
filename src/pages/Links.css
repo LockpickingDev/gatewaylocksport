@@ -1,0 +1,132 @@
+.links-page {
+  min-height: calc(100vh - 64px);
+  background: #0F0E0C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.links-card {
+  width: 100%;
+  max-width: 480px;
+}
+
+.links-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.links-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.links-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffb81c;
+  margin: 0 0 0.35rem;
+}
+
+.links-sub {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #888780;
+  margin: 0;
+}
+
+.links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.links-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #1A1916;
+  border: 1px solid #2e2c28;
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.links-item:hover {
+  background: #222019;
+  border-color: #ffb81c;
+  transform: translateY(-1px);
+}
+
+.links-item:active {
+  transform: translateY(0);
+}
+
+.links-item-icon {
+  color: #ffb81c;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.links-item-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.links-item-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888780;
+}
+
+.links-item-value {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.95rem;
+  color: #F4EFE4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.links-arrow {
+  color: #555248;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.links-item:hover .links-arrow {
+  color: #ffb81c;
+}
+
+@media (max-width: 480px) {
+  .links-page {
+    padding: 2rem 1.25rem;
+    align-items: flex-start;
+    padding-top: 2.5rem;
+  }
+
+  .links-logo {
+    width: 64px;
+    height: 64px;
+  }
+
+  .links-title {
+    font-size: 1.5rem;
+  }
+}
