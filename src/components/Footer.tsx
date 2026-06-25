@@ -53,8 +53,15 @@ export default function Footer() {
 
       <div className="footer-support">
         <span className="footer-support-text">
-          Love what we do? Support the club with a cash donation to Dev at any meetup, or donate via Venmo
-          {/* TODO: enable when Venmo Business is live — href="https://venmo.com/u/GatewayLocksport" */}.
+          Love what we do? Support the club with a cash donation to Dev at any meetup, or donate via{' '}
+          <a
+            href="https://venmo.com/u/LockpickingDevEvents"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-support-link"
+          >
+            Venmo
+          </a>.
         </span>
       </div>
 
