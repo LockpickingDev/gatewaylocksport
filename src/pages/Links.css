@@ -63,7 +63,7 @@
 
 .links-item:hover {
   background: #222019;
-  border-color: #ffb81c;
+  border-color: var(--link-color, #ffb81c);
   transform: translateY(-1px);
 }
 
@@ -111,7 +111,7 @@
 }
 
 .links-item:hover .links-arrow {
-  color: #ffb81c;
+  color: var(--link-color, #ffb81c);
 }
 
 @media (max-width: 480px) {

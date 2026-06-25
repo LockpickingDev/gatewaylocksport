@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5183/links)",
+      "Bash(command -v chromium-cli)",
+      "Bash(npx --no-install chromium-cli --help)",
+      "Bash(npm ls *)",
+      "Bash(ls \"C:/Program Files/Google/Chrome/Application/chrome.exe\" 2>/dev/null; ls \"C:/Program Files \\(x86\\)/Google/Chrome/Application/chrome.exe\" 2>/dev/null; ls \"C:/Program Files/Microsoft/Edge/Application/msedge.exe\" 2>/dev/null)",
+      "Read(//c/Program Files \\(x86\\)/Google/Chrome/Application/**)",
+      "Bash('/c/Program Files/Microsoft/Edge/Application/msedge.exe' --headless --disable-gpu --no-sandbox --hide-scrollbars --window-size=480,900 '--screenshot=C:\\\\Users\\\\dan7g\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-dan7g-source-gatewaylocksport\\\\4cea74c5-407e-4d90-b51c-f39df8ab97f3\\\\scratchpad/links-page.png' http://localhost:5183/links)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" -L \"https://venmo.com/u/LockpickingDevEvents\")",
+      "Bash(powershell -Command 'Get-Process -Name node -ErrorAction SilentlyContinue | Where-Object {\\(Get-NetTCPConnection -LocalPort 5183 -ErrorAction SilentlyContinue\\).OwningProcess -contains $_.Id} | Stop-Process -Force')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 3 http://localhost:5183/links)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5184/)",
+      "Bash(npm init *)",
+      "Bash(powershell -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")"
+    ]
+  }
+}
