@@ -71,6 +71,13 @@
   width: fit-content;
 }
 
+.social-btn-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .social-btn:hover {
   border-color: #b87d0e;
   color: #ffb81c;

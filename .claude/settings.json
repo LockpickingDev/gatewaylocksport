@@ -17,7 +17,14 @@
       "Bash(npm run *)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5184/)",
       "Bash(npm init *)",
-      "Bash(powershell -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")"
+      "Bash(powershell -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")",
+      "WebFetch(domain:cdn.simpleicons.org)",
+      "Bash(curl -sI \"https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/meetup.svg\")",
+      "Bash(curl -sf https://cdn.jsdelivr.net/npm/simple-icons@latest/icons.json -o C:/Users/dan7g/AppData/Local/Temp/claude/c--Users-dan7g-source-gatewaylocksport/36b30262-a03c-4ccf-850f-cd8472942bee/scratchpad/icons/icons.json)",
+      "Bash(curl -sf https://cdn.jsdelivr.net/npm/simple-icons@latest/data/simple-icons.json -o C:/Users/dan7g/AppData/Local/Temp/claude/c--Users-dan7g-source-gatewaylocksport/36b30262-a03c-4ccf-850f-cd8472942bee/scratchpad/icons/icons.json)",
+      "Bash(curl -sfI \"https://cdn.jsdelivr.net/npm/simple-icons@latest/\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5174/links)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5173/links)"
     ]
   }
 }

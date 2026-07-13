@@ -78,6 +78,12 @@
   align-items: center;
 }
 
+.links-item-icon-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
 .links-item-body {
   flex: 1;
   display: flex;
