@@ -12,6 +12,7 @@ import Unsubscribe from './pages/Unsubscribe'
 import Admin from './pages/Admin'
 import Products from './pages/Products'
 import Links from './pages/Links'
+import Competition from './pages/Competition'
 import './App.css'
 
 function ScrollToTop() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/links" element={<Links />} />
+          <Route path="/competition" element={<Competition />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
