@@ -1,0 +1,868 @@
+/* 2026 Midwest Open Lockpicking Competition page.
+   Hero, contests, activities, and closing CTA use the comp- prefix;
+   the schedule table and main-event feature rows use the compc- prefix. */
+
+.comp {
+  text-align: left;
+  min-height: calc(100vh - 64px);
+}
+
+.comp h3 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #E8E0D0;
+  margin: 0;
+}
+
+/* ---- Hero ---- */
+
+.comp-hero {
+  text-align: center;
+  padding: 3.5rem 2rem 2.5rem;
+  border-bottom: 1px solid #2a2820;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(255, 184, 28, 0.07), transparent 70%),
+    #0F0E0C;
+}
+
+.comp-hero-kicker {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #888780;
+  margin: 0 0 0.75rem;
+}
+
+.comp-hero-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+
+.comp-hero-title span {
+  display: block;
+  color: #ffb81c;
+}
+
+.comp-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 0.6rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #B8B4A8;
+  margin-bottom: 1.25rem;
+}
+
+.comp-hero-date {
+  color: #E8E0D0;
+}
+
+.comp-hero-dot {
+  color: #55534a;
+}
+
+.comp-hero-meta a {
+  color: #0072ce;
+  text-decoration: none;
+}
+
+.comp-hero-meta a:hover {
+  text-decoration: underline;
+}
+
+.comp-hero-tagline {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.95rem;
+  color: #B8B4A8;
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 0 auto 1.5rem;
+}
+
+.comp-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.comp-cta {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.65rem 1.5rem;
+  border-radius: 4px;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.comp-cta:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+.comp-cta--meetup {
+  background: #ffb81c;
+  color: #0F0E0C;
+}
+
+.comp-cta--facebook {
+  background: transparent;
+  color: #E8E0D0;
+  border: 1px solid #55534a;
+}
+
+.comp-facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 1.75rem 0 0;
+}
+
+.comp-facts li {
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: #B8B4A8;
+  border: 1px solid #2a2820;
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+}
+
+/* ---- Centered sections (contests, activities, closing) ---- */
+
+.comp-section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 0.5rem;
+}
+
+.comp-heading {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffb81c;
+  text-align: center;
+  margin: 0 0 1.5rem;
+}
+
+.comp-section-sub {
+  text-align: center;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.9rem;
+  color: #888780;
+  margin: -1rem 0 1.5rem;
+}
+
+/* ---- Sponsors ---- */
+
+.comp-sponsor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.comp-sponsor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+  border: 1px solid #2a2820;
+  border-top: 3px solid #ffb81c;
+  border-radius: 8px;
+  background: #14130f;
+  padding: 1.5rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.comp-sponsor-card:hover {
+  border-color: #ffb81c;
+  transform: translateY(-2px);
+}
+
+.comp-sponsor-logo {
+  width: 100%;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1917;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.comp-sponsor-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comp-sponsor-logo-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.comp-sponsor-blurb {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.88rem;
+  color: #B8B4A8;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.comp-sponsor-link {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #ffb81c;
+}
+
+.comp-sponsor-card:hover .comp-sponsor-link {
+  text-decoration: underline;
+}
+
+/* ---- Left-bar sections (schedule, main events) ---- */
+
+.compc-section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 0.5rem;
+}
+
+.compc-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffb81c;
+  margin: 0 0 1.5rem;
+}
+
+.compc-heading::before {
+  content: '';
+  width: 5px;
+  height: 1.4rem;
+  background: #ffb81c;
+  flex-shrink: 0;
+}
+
+/* ---- Schedule ---- */
+
+.compc-sched {
+  border: 1px solid #2a2820;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.compc-sched-row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid #2a2820;
+  border-left: 3px solid transparent;
+  color: inherit;
+  text-decoration: none;
+  text-align: left;
+}
+
+/* Higher specificity than --main below: the striped rows keep this dark
+   background even when highlighted, so only the unstriped main row (Midwest
+   Open) shows the yellow tint. */
+.compc-sched-row:nth-child(even) {
+  background: #14130f;
+}
+
+.compc-sched-row:last-child {
+  border-bottom: none;
+}
+
+.compc-sched-row--main {
+  border-left-color: #ffb81c;
+  background: rgba(255, 184, 28, 0.06);
+}
+
+a.compc-sched-row--main:hover {
+  background: rgba(255, 184, 28, 0.11);
+}
+
+.compc-sched-time {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.compc-sched-start {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #E8E0D0;
+  white-space: nowrap;
+}
+
+.compc-sched-start em {
+  font-style: normal;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #888780;
+  margin-left: 3px;
+}
+
+.compc-sched-end {
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: #888780;
+  white-space: nowrap;
+}
+
+.compc-sched-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 184, 28, 0.08);
+  border: 1px solid #3a3830;
+  color: #ffb81c;
+  flex-shrink: 0;
+  margin-top: 0.5rem;
+}
+
+.compc-sched-badge {
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0F0E0C;
+  background: #ffb81c;
+  border-radius: 999px;
+  padding: 0.14rem 0.55rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.compc-sched-more {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #ffb81c;
+  margin-top: 0.4rem;
+}
+
+a.compc-sched-row:hover .compc-sched-more {
+  text-decoration: underline;
+}
+
+.compc-sched-body h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+
+.compc-sched-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.compc-sched-body li {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.88rem;
+  color: #B8B4A8;
+  line-height: 1.55;
+  margin-bottom: 0.2rem;
+}
+
+/* ---- Photo slots ---- */
+
+.comp-photo,
+.compc-photo {
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #1a1917;
+}
+
+.comp-photo {
+  margin-bottom: 1rem;
+}
+
+.comp-photo img,
+.compc-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.comp-photo--clickable,
+.compc-photo--clickable {
+  cursor: pointer;
+}
+
+.comp-photo--clickable img,
+.compc-photo--clickable img {
+  transition: transform 0.25s ease;
+}
+
+.comp-photo--clickable:hover img,
+.compc-photo--clickable:hover img {
+  transform: scale(1.04);
+}
+
+.comp-photo--empty,
+.compc-photo--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: 1px dashed #3a3830;
+  color: #55534a;
+}
+
+.comp-photo--empty span,
+.compc-photo--empty span {
+  font-family: monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---- Video embed slots ---- */
+
+.compc-video-embed {
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #1a1917;
+}
+
+.compc-video-embed iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.compc-video-embed--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: 1px dashed #3a3830;
+  color: #55534a;
+}
+
+.compc-video-embed--empty span {
+  font-family: monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---- Main event feature rows ---- */
+
+.compc-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: 2rem;
+  align-items: start;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid #2a2820;
+  scroll-margin-top: calc(64px + 1.5rem);
+}
+
+.compc-feature:last-of-type {
+  border-bottom: none;
+}
+
+.compc-feature--flip {
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+}
+
+.compc-feature--flip .compc-photo,
+.compc-feature--flip .compc-video-embed {
+  order: 2;
+}
+
+.compc-feature--flip .compc-feature-body {
+  order: 1;
+}
+
+.compc-feature .compc-photo,
+.compc-feature .compc-video-embed {
+  position: sticky;
+  top: calc(64px + 1.5rem); /* clears the sticky 64px navbar */
+}
+
+.compc-feature-time {
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: #888780;
+  margin: 0 0 0.35rem;
+}
+
+.compc-feature-body h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.compc-prize {
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: #ffb81c;
+  margin: 0 0 0.6rem;
+}
+
+.compc-desc {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.9rem;
+  color: #B8B4A8;
+  line-height: 1.6;
+  margin: 0 0 0.85rem;
+}
+
+.compc-rules {
+  padding-left: 1.3rem;
+  margin: 0;
+}
+
+.compc-rules li {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.88rem;
+  color: #B8B4A8;
+  line-height: 1.55;
+  margin-bottom: 0.45rem;
+}
+
+.compc-rules li::marker {
+  color: #ffb81c;
+  font-family: monospace;
+  font-size: 0.82rem;
+}
+
+.compc-videos-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #888780;
+  margin: 1.1rem 0 0.5rem;
+}
+
+.compc-videos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.compc-videos li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.compc-videos a {
+  font-size: 0.88rem;
+  color: #0072ce;
+  text-decoration: none;
+}
+
+.compc-videos a:hover {
+  text-decoration: underline;
+}
+
+.compc-video-tag {
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #888780;
+  border: 1px solid #2a2820;
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  white-space: nowrap;
+}
+
+/* ---- Side contest cards ---- */
+
+.comp-contest-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.comp-contest-card {
+  border: 1px solid #2a2820;
+  border-radius: 6px;
+  padding: 1.25rem;
+}
+
+.comp-contest-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
+
+.comp-contest-prize {
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: #ffb81c;
+  margin: 0 0 0.75rem;
+}
+
+.comp-contest-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comp-contest-card li {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.85rem;
+  color: #B8B4A8;
+  line-height: 1.55;
+  margin-bottom: 0.4rem;
+}
+
+/* ---- Activities ---- */
+
+.comp-activity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.comp-activity {
+  background: #0F0E0C;
+  border: 1px solid #2a2820;
+  border-radius: 6px;
+  padding: 1.1rem;
+}
+
+.comp-activity .compc-photo {
+  margin-bottom: 0.6rem;
+}
+
+.comp-activity h3 {
+  font-size: 0.92rem;
+  margin-bottom: 0.35rem;
+}
+
+.comp-activity p {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.82rem;
+  color: #888780;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.comp-bring {
+  text-align: center;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #E8E0D0;
+  border: 1px dashed #55534a;
+  border-radius: 6px;
+  padding: 0.9rem 1.25rem;
+  margin: 1.5rem auto 0;
+  max-width: 560px;
+}
+
+/* ---- Event shop ---- */
+
+.comp-shop-panel {
+  border: 1px solid #2a2820;
+  border-top: 3px solid #ffb81c;
+  border-radius: 8px;
+  background: #14130f;
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+}
+
+.comp-shop-heading {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffb81c;
+  margin: 0 0 0.35rem;
+}
+
+.comp-shop-sub {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.9rem;
+  color: #888780;
+  margin: 0 0 1.25rem;
+}
+
+.comp-shop-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.comp-shop-card {
+  position: relative;
+  background: #0F0E0C;
+  border: 1px solid #2a2820;
+  border-radius: 6px;
+  padding: 1.1rem;
+}
+
+.comp-shop-card .compc-photo {
+  margin-bottom: 0.6rem;
+}
+
+.comp-shop-card h3 {
+  font-size: 0.92rem;
+  margin-bottom: 0.35rem;
+}
+
+.comp-shop-card p {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.82rem;
+  color: #888780;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.comp-shop-price {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #0F0E0C;
+  background: #ffb81c;
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+}
+
+/* ---- Final CTA ---- */
+
+.comp-final {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 3.5rem;
+}
+
+.comp-final p {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.95rem;
+  color: #B8B4A8;
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 800px) {
+  .comp-contest-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comp-activity-grid,
+  .comp-shop-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .comp-sponsor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .compc-feature,
+  .compc-feature--flip {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .compc-feature--flip .compc-photo,
+  .compc-feature--flip .compc-video-embed {
+    order: 0;
+  }
+
+  .compc-feature--flip .compc-feature-body {
+    order: 0;
+  }
+
+  .compc-feature .compc-photo,
+  .compc-feature .compc-video-embed {
+    position: static;
+  }
+}
+
+@media (max-width: 480px) {
+  .comp-hero {
+    padding: 2.25rem 1.25rem 2rem;
+  }
+
+  .comp-section,
+  .compc-section {
+    padding: 2rem 1.25rem 0.5rem;
+  }
+
+  .compc-sched-row {
+    grid-template-columns: 74px 1fr;
+    gap: 0.75rem;
+    padding: 1rem 0.85rem;
+  }
+
+  .compc-sched-start {
+    font-size: 1.15rem;
+  }
+
+  .compc-sched-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .compc-sched-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .comp-activity-grid,
+  .comp-shop-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comp-shop-panel {
+    padding: 1.25rem 1rem;
+  }
+}
