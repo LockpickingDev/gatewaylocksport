@@ -5,6 +5,7 @@ import type { ScheduleIcon } from './competitionData'
 import {
   EVENT,
   QUICK_FACTS,
+  RECORDING_NOTICE,
   SCHEDULE,
   MAIN_EVENTS,
   SIDE_CONTESTS,
@@ -87,6 +88,10 @@ export default function Competition() {
         <ul className="comp-facts">
           {QUICK_FACTS.map(f => <li key={f}>{f}</li>)}
         </ul>
+        <div className="comp-notice">
+          <span className="comp-notice-icon"><VideoIcon /></span>
+          <span>{RECORDING_NOTICE}</span>
+        </div>
       </section>
 
       {/* Sponsors */}
@@ -388,6 +393,14 @@ function CameraIcon() {
   return (
     <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zM9 3l-1.83 2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.17L15 3H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z" />
+    </svg>
+  )
+}
+
+function VideoIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17 10.5V7c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-3.5l4 4v-11l-4 4z" />
     </svg>
   )
 }

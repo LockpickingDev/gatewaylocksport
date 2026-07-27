@@ -143,6 +143,30 @@
   padding: 0.3rem 0.85rem;
 }
 
+.comp-notice {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.65rem;
+  max-width: 640px;
+  margin: 1.75rem auto 0;
+  padding: 0.9rem 1.25rem;
+  background: rgba(255, 184, 28, 0.06);
+  border: 1px solid rgba(255, 184, 28, 0.25);
+  border-radius: 6px;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 0.85rem;
+  color: #B8B4A8;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.comp-notice-icon {
+  flex-shrink: 0;
+  color: #ffb81c;
+  margin-top: 0.15rem;
+}
+
 /* ---- Centered sections (contests, activities, closing) ---- */
 
 .comp-section {
@@ -174,7 +198,7 @@
 
 .comp-sponsor-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
 }
 

@@ -26,6 +26,9 @@ export const QUICK_FACTS = [
   'Spectators welcome',
 ]
 
+export const RECORDING_NOTICE =
+  "Heads up: photos and video will be taken throughout the event for Gateway Locksport's promotional and social media use. By attending, you consent to being recorded. If you'd rather not appear on camera, just let a staff member know."
+
 export type ScheduleIcon = 'door' | 'pick' | 'food' | 'escape' | 'trophy'
 
 export interface ScheduleBlock {
@@ -281,6 +284,7 @@ export interface Sponsor {
   blurb: string
   logo: string
   logoAlt: string
+  pending?: boolean // dims the card and disables its link until they confirm
 }
 
 // Set logo to a path under /public (e.g. '/competition/paclock-logo.png') once
@@ -309,6 +313,15 @@ export const SPONSORS: Sponsor[] = [
     blurb: 'Quality lockpicks and covert entry tools for locksport enthusiasts.',
     logo: '',
     logoAlt: 'Sponsor logo',
+  },
+  {
+    name: 'Handcuff Sponsor Name Here',
+    url: 'https://Sponsor.com/',
+    urlLabel: 'Sponsor.com',
+    blurb: 'Handcuffs and restraint gear for the Spy Escape Competition.',
+    logo: '',
+    logoAlt: 'Handcuff sponsor logo',
+    pending: true,
   },
 ]
 
