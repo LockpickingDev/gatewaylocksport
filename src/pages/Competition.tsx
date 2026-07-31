@@ -51,7 +51,7 @@ export default function Competition() {
   return (
     <div className="comp">
       <SEO
-        title="2026 Midwest Open Lockpicking Competition"
+        title="2026 LPU Midwest Open Lockpicking Competition"
         description="A full day of lockpicking, learning, and friendly competition in St. Peters, MO. Free to attend, free to compete, no experience required."
         canonical="/competition"
         noindex
@@ -64,8 +64,8 @@ export default function Competition() {
       <section className="comp-hero">
         <p className="comp-hero-kicker">Gateway Locksport Presents</p>
         <h1 className="comp-hero-title">
-          2026 Midwest Open
-          <span>Lockpicking Competition</span>
+          2026 LPU Midwest Open
+          <span className="comp-hero-subtitle">An official Lockpickers United lockpicking competition</span>
         </h1>
         <div className="comp-hero-meta">
           <span className="comp-hero-date">{EVENT.dateLabel}</span>
