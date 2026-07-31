@@ -230,6 +230,12 @@ export interface Activity {
 
 export const ACTIVITIES: Activity[] = [
   {
+    title: 'Locktopus Timed Trials',
+    desc: 'Test your speed and skill against the clock with the Locktopus. Perfect practice for the Midwest Open Lockpicking Competition.',
+    image: '/competition/Locktopus.png',
+    imageAlt: '',
+  },
+  {
     title: 'Swappable Practice Door',
     desc: 'Mini door with swappable knobs and deadbolts to test the most common residential locks in the USA - Kwikset and Schlage.',
     image: '/competition/swappable door.jfif',
@@ -247,12 +253,6 @@ export const ACTIVITIES: Activity[] = [
     // desc: 'Learn to break out of zip ties and riot cuffs.',
     image: '/competition/Zip Ties.jfif',
     imageAlt: 'Zip Ties and Riot Cuffs',
-  },
-  {
-    title: 'Locktopus Timed Trials',
-    desc: 'Test your speed and skill against the clock with the Locktopus. Perfect practice for the Midwest Open Lockpicking Competition.',
-    image: '/competition/Locktopus.png',
-    imageAlt: '',
   },
   // {
   //   title: 'Gun Lock Cable Cutting Station',
@@ -328,20 +328,6 @@ export interface SaleItem {
 // price is displayed as-is (e.g. '$20'); leave it '' to hide the price chip.
 export const SALE_ITEMS: SaleItem[] = [
   {
-    title: 'Beginner Lockpick Set',
-    desc: 'Everything you need to start picking - a great first kit to take home.',
-    price: '',
-    image: '/competition/CI Genesis - Square.JPG',
-    imageAlt: 'Beginner lockpick set',
-  },
-  {
-    title: 'Full Lockpick Set',
-    desc: 'A larger set of picks and turning tools for pickers ready to go deeper.',
-    price: '',
-    image: '',
-    imageAlt: 'Full lockpick set',
-  },
-  {
     title: 'Practice Lock Set',
     desc: 'Progressively pinned practice locks that grow with your skills.',
     price: '',
@@ -354,5 +340,19 @@ export const SALE_ITEMS: SaleItem[] = [
     price: '',
     image: '',
     imageAlt: 'Clear practice lock set',
+  },
+  {
+    title: 'Beginner Lockpick Set',
+    desc: 'Everything you need to start picking - a great first kit to take home.',
+    price: '',
+    image: '/competition/CI Genesis - Square.JPG',
+    imageAlt: 'Beginner lockpick set',
+  },
+  {
+    title: 'Full Lockpick Set',
+    desc: 'A larger set of picks and turning tools for pickers ready to go deeper.',
+    price: '',
+    image: '',
+    imageAlt: 'Full lockpick set',
   },
 ]
