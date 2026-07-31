@@ -19,7 +19,7 @@
 
 .comp-hero {
   text-align: center;
-  padding: 3.5rem 2rem 2.5rem;
+  padding: 2.25rem 2rem 2.5rem;
   border-bottom: 1px solid #2a2820;
   background:
     radial-gradient(ellipse 70% 60% at 50% 0%, rgba(255, 184, 28, 0.07), transparent 70%),
@@ -50,6 +50,15 @@
 .comp-hero-title span {
   display: block;
   color: #ffb81c;
+}
+
+.comp-hero-subtitle {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  margin-top: 0.5rem;
 }
 
 .comp-hero-meta {
@@ -198,7 +207,7 @@
 
 .comp-sponsor-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.25rem;
 }
 
@@ -224,7 +233,7 @@
 
 .comp-sponsor-logo {
   width: 100%;
-  height: 92px;
+  height: 128px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -853,7 +862,7 @@ a.compc-sched-row:hover .compc-sched-more {
 
 @media (max-width: 480px) {
   .comp-hero {
-    padding: 2.25rem 1.25rem 2rem;
+    padding: 1.5rem 1.25rem 2rem;
   }
 
   .comp-section,

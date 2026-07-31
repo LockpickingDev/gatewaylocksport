@@ -2,7 +2,7 @@
 // Two layout variants (Competition.tsx / CompetitionAlt.tsx) render this same data.
 
 export const EVENT = {
-  name: '2026 Midwest Open Lockpicking Competition',
+  name: '2026 LPU Midwest Open Lockpicking Competition',
   tagline:
     "Whether you're brand new to lockpicking, an experienced locksporter, or just curious, come join us for a full day of learning, friendly competition, and hands-on fun. Free to attend. Free to compete. No experience required. Spectators are welcome!",
   intro:
@@ -27,7 +27,7 @@ export const QUICK_FACTS = [
 ]
 
 export const RECORDING_NOTICE =
-  "Heads up: photos and video will be taken throughout the event for Gateway Locksport's promotional and social media use. By attending, you consent to being recorded. If you'd rather not appear on camera, just let a staff member know."
+  "Heads up: photos and video will be taken throughout the event for Lockpickers United's promotional and social media use. By attending, you consent to being recorded. If you'd rather not appear on camera, just let a staff member know."
 
 export type ScheduleIcon = 'door' | 'pick' | 'food' | 'escape' | 'trophy'
 
@@ -182,10 +182,10 @@ export const SIDE_CONTESTS: Contest[] = [
   },
   {
     title: 'Door Raffle',
-    prize: '3 winners',
+    prize: 'Multiple winners',
     details: [
       'Every person that shows up gets a raffle ticket.',
-      'Three winners drawn during the dinner break.',
+      'Winners drawn during the dinner break.',
     ],
     image: '/competition/raffle.jfif',
     imageAlt: 'Door raffle prizes',
@@ -293,36 +293,28 @@ export const SPONSORS: Sponsor[] = [
   {
     name: 'PACLOCK',
     url: 'https://paclock.com/',
-    urlLabel: 'paclock.com',
+    urlLabel: 'PACLOCK.com',
     blurb: 'American-made padlocks and security products, built in the USA.',
     logo: '/competition/Paclock.png',
     logoAlt: 'PACLOCK logo',
   },
-  // {
-  //   name: 'Covert Instruments',
-  //   url: 'https://covertinstruments.com/',
-  //   urlLabel: 'covertinstruments.com',
-  //   blurb: 'Quality lockpicks and covert entry tools for locksport enthusiasts.',
-  //   logo: '',
-  //   logoAlt: 'Covert Instruments logo',
-  // },
   {
-    name: 'Sponsor Name Here',
-    url: 'https://Sponsor.com/',
-    urlLabel: 'Sponsor.com',
+    name: 'Covert Instruments',
+    url: 'https://covertinstruments.com/',
+    urlLabel: 'CovertInstruments.com',
     blurb: 'Quality lockpicks and covert entry tools for locksport enthusiasts.',
-    logo: '',
-    logoAlt: 'Sponsor logo',
+    logo: '/competition/CI.png',
+    logoAlt: 'Covert Instruments logo',
   },
-  {
-    name: 'Handcuff Sponsor Name Here',
-    url: 'https://Sponsor.com/',
-    urlLabel: 'Sponsor.com',
-    blurb: 'Handcuffs and restraint gear for the Spy Escape Competition.',
-    logo: '',
-    logoAlt: 'Handcuff sponsor logo',
-    pending: true,
-  },
+  // {
+  //   name: 'Handcuff Sponsor Name Here',
+  //   url: 'https://Sponsor.com/',
+  //   urlLabel: 'Sponsor.com',
+  //   blurb: 'Handcuffs and restraint gear for the Spy Escape Competition.',
+  //   logo: '',
+  //   logoAlt: 'Handcuff sponsor logo',
+  //   pending: true,
+  // },
 ]
 
 export interface SaleItem {
