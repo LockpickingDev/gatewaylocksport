@@ -329,30 +329,30 @@ export interface SaleItem {
 export const SALE_ITEMS: SaleItem[] = [
   {
     title: 'Practice Lock Set',
-    desc: 'Progressively pinned practice locks that grow with your skills.',
+    desc: 'Progressively pinned practice lock that can grow with your skills.',
     price: '',
     image: '/products/Practice Lock Kit.JPG',
     imageAlt: 'Practice lock set',
   },
+  // {
+  //   title: 'Clear Practice Lock Set',
+  //   desc: 'See-through locks that show exactly what your pick is doing inside.',
+  //   price: '',
+  //   image: '',
+  //   imageAlt: 'Clear practice lock set',
+  // },
   {
-    title: 'Clear Practice Lock Set',
-    desc: 'See-through locks that show exactly what your pick is doing inside.',
-    price: '',
-    image: '',
-    imageAlt: 'Clear practice lock set',
-  },
-  {
-    title: 'Beginner Lockpick Set',
+    title: 'Genesis Lockpick Set',
     desc: 'Everything you need to start picking - a great first kit to take home.',
     price: '',
     image: '/competition/CI Genesis - Square.JPG',
-    imageAlt: 'Beginner lockpick set',
+    imageAlt: 'Genesis lockpick set',
   },
-  {
-    title: 'Full Lockpick Set',
-    desc: 'A larger set of picks and turning tools for pickers ready to go deeper.',
-    price: '',
-    image: '',
-    imageAlt: 'Full lockpick set',
-  },
+  // {
+  //   title: 'Full Lockpick Set',
+  //   desc: 'A larger set of picks and turning tools for pickers ready to go deeper.',
+  //   price: '',
+  //   image: '',
+  //   imageAlt: 'Full lockpick set',
+  // },
 ]

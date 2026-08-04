@@ -764,7 +764,8 @@ a.compc-sched-row:hover .compc-sched-more {
 
 .comp-shop-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 200px));
+  justify-content: center;
   gap: 0.75rem;
   text-align: left;
 }
@@ -830,8 +831,7 @@ a.compc-sched-row:hover .compc-sched-more {
     grid-template-columns: 1fr;
   }
 
-  .comp-activity-grid,
-  .comp-shop-grid {
+  .comp-activity-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -890,8 +890,7 @@ a.compc-sched-row:hover .compc-sched-more {
     height: 17px;
   }
 
-  .comp-activity-grid,
-  .comp-shop-grid {
+  .comp-activity-grid {
     grid-template-columns: 1fr;
   }
 
