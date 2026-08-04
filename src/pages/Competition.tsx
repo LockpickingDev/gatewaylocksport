@@ -54,7 +54,6 @@ export default function Competition() {
         title="2026 LPU Midwest Open Lockpicking Competition"
         description="A full day of lockpicking, learning, and friendly competition in St. Peters, MO. Free to attend, free to compete, no experience required."
         canonical="/competition"
-        noindex
       />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(EVENT_SCHEMA)}</script>
