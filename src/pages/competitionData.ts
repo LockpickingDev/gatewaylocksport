@@ -294,7 +294,7 @@ export const SPONSORS: Sponsor[] = [
     name: 'PACLOCK',
     url: 'https://paclock.com/',
     urlLabel: 'PACLOCK.com',
-    blurb: 'American-made padlocks and security products, built in the USA.',
+    blurb: 'Engineered Security. Made in USA with Global Components.',
     logo: '/competition/Paclock.png',
     logoAlt: 'PACLOCK logo',
   },
