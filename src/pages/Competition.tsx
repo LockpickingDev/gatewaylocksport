@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import SEO from '../components/SEO'
 import type { ScheduleIcon } from './competitionData'
@@ -16,6 +16,23 @@ import {
   SALE_ITEMS,
 } from './competitionData'
 import './Competition.css'
+
+const MIDWEST_PRIZE_PHOTOS: { src: string; alt: string }[] = [
+  { src: '/competition/CompetitionPaclocks.JPG', alt: 'Competition Paclocks' },
+  { src: '/competition/CompetitionPaclocks1st.JPG', alt: 'Competition Paclock 1st Place' },
+  { src: '/competition/CompetitionPaclocks2nd.JPG', alt: 'Competition Paclock 2nd Place' },
+  { src: '/competition/CompetitionPaclocks3rd.JPG', alt: 'Competition Paclock 3rd Place' },
+  { src: '/competition/CompetitionFantasm1st (1).JPG', alt: 'Competition Fantasm 1st Place (1)' },
+  { src: '/competition/CompetitionFantasm1st (2).JPG', alt: 'Competition Fantasm 1st Place (2)' },
+  { src: '/competition/CompetitionFantasm1st (3).JPG', alt: 'Competition Fantasm 1st Place (3)' },
+  { src: '/competition/CompetitionFantasm1st (4).JPG', alt: 'Competition Fantasm 1st Place (4)' },
+  { src: '/competition/CompetitionFantasm2nd3rd.JPG', alt: 'Competition Fantasm 2nd Place & 3rd Place' },
+]
+
+const PRIZE_PHOTO_IMAGES = MIDWEST_PRIZE_PHOTOS.map(p => ({ src: p.src, caption: p.alt }))
+const CONTEST_IMAGES = SIDE_CONTESTS.map(c => ({ src: c.image, caption: c.title }))
+const ACTIVITY_IMAGES = ACTIVITIES.map(a => ({ src: a.image, caption: a.title }))
+const SHOP_IMAGES = SALE_ITEMS.map(item => ({ src: item.image, caption: item.title }))
 
 const EVENT_SCHEMA = {
   '@context': 'https://schema.org',
@@ -45,8 +62,28 @@ const EVENT_SCHEMA = {
   description: EVENT.tagline,
 }
 
+type LightboxImage = { src: string; caption: string }
+
 export default function Competition() {
-  const [lightbox, setLightbox] = useState<{ src: string; caption: string } | null>(null)
+  const [lightbox, setLightbox] = useState<{ images: LightboxImage[]; index: number } | null>(null)
+
+  const openLightbox = (images: LightboxImage[], index: number) => setLightbox({ images, index })
+  const closeLightbox = () => setLightbox(null)
+  const showPrevPhoto = () =>
+    setLightbox(lb => lb && { ...lb, index: (lb.index - 1 + lb.images.length) % lb.images.length })
+  const showNextPhoto = () =>
+    setLightbox(lb => lb && { ...lb, index: (lb.index + 1) % lb.images.length })
+
+  useEffect(() => {
+    if (!lightbox) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox()
+      if (e.key === 'ArrowLeft') showPrevPhoto()
+      if (e.key === 'ArrowRight') showNextPhoto()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [lightbox])
 
   return (
     <div className="comp">
@@ -162,27 +199,92 @@ export default function Competition() {
       {/* Main events: alternating photo/text feature rows */}
       <section className="compc-section">
         <h2 className="compc-heading">Main Events</h2>
-        {MAIN_EVENTS.map((ev, i) => (
-          <article
-            className={`compc-feature${i % 2 === 1 ? ' compc-feature--flip' : ''}`}
-            id={ev.id}
-            key={ev.title}
-          >
-            {ev.video !== undefined ? (
-              <VideoEmbed url={ev.video} title={ev.title} />
-            ) : (
-              <Photo
-                src={ev.image}
-                alt={ev.imageAlt}
-                prefix="compc"
-                onClick={() => setLightbox({ src: ev.image, caption: ev.title })}
-              />
-            )}
-            <div className="compc-feature-body">
-              <p className="compc-feature-time">{ev.time}</p>
-              <h3>{ev.title}</h3>
-              <p className="compc-prize">Prize: {ev.prize}</p>
-              <p className="compc-desc">{ev.desc}</p>
+        {MAIN_EVENTS.map((ev, i) =>
+          ev.id === 'spy-escape' ? (
+            <article className="compc-feature compc-feature--spy" id={ev.id} key={ev.title}>
+              <div className="compc-spy-header">
+                <p className="compc-feature-time">{ev.time}</p>
+                <h3>{ev.title}</h3>
+              </div>
+
+              <div className="compc-spy-details">
+                <div className="compc-spy-desc">
+                  <div className="compc-spy-prize-photo">
+                    <Photo src="" alt="Spy Escape Competition prizes" prefix="compc" />
+                  </div>
+                  {ev.prizeLines ? (
+                    <div className="compc-prize">
+                      <p>Prizes:</p>
+                      {ev.prizeLines.map(line => <p key={line}>{line}</p>)}
+                    </div>
+                  ) : (
+                    <p className="compc-prize">Prize: {ev.prize}</p>
+                  )}
+                  <p className="compc-desc">{ev.desc}</p>
+                  <ol className="compc-rules">
+                    {ev.rules.map(rule => <li key={rule}>{rule}</li>)}
+                  </ol>
+                </div>
+                <div className="compc-spy-video-col">
+                  <div className="compc-spy-video">
+                    {ev.video !== undefined ? (
+                      <VideoEmbed url={ev.video} title={ev.title} />
+                    ) : (
+                      <Photo
+                        src={ev.image}
+                        alt={ev.imageAlt}
+                        prefix="compc"
+                        onClick={() => openLightbox([{ src: ev.image, caption: ev.title }], 0)}
+                      />
+                    )}
+                  </div>
+                  {ev.showPrepVideos && (
+                    <div className="compc-spy-videos">
+                      <p className="compc-videos-label">Prepare with these how-to videos:</p>
+                      <ul className="compc-videos">
+                        {PREP_VIDEOS.map(v => (
+                          <li key={v.url}>
+                            <a href={v.url} target="_blank" rel="noopener noreferrer">{v.title}</a>
+                            <span className="compc-video-tag">{v.tag}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </article>
+          ) : ev.id === 'midwest-open' ? (
+            <article className="compc-feature compc-feature--midwest" id={ev.id} key={ev.title}>
+              <div className="compc-midwest-header">
+                <p className="compc-feature-time">{ev.time}</p>
+                <h3>{ev.title}</h3>
+              </div>
+
+              <div className="compc-midwest-photo-grid">
+                {MIDWEST_PRIZE_PHOTOS.map((photo, idx) => (
+                  <Photo
+                    key={photo.src}
+                    src={photo.src}
+                    alt={photo.alt}
+                    prefix="compc"
+                    onClick={() => openLightbox(PRIZE_PHOTO_IMAGES, idx)}
+                  />
+                ))}
+              </div>
+
+              <div className="compc-midwest-body">
+                {ev.prizeLines ? (
+                  <div className="compc-prize">
+                    <p>Prizes:</p>
+                    {ev.prizeLines.map(line => <p key={line}>{line}</p>)}
+                  </div>
+                ) : (
+                  <p className="compc-prize">Prize: {ev.prize}</p>
+                )}
+                <p className="compc-desc">{ev.desc}</p>
+              </div>
+
               <ol className="compc-rules">
                 {ev.rules.map(rule => <li key={rule}>{rule}</li>)}
               </ol>
@@ -199,22 +301,68 @@ export default function Competition() {
                   </ul>
                 </>
               )}
-            </div>
-          </article>
-        ))}
+            </article>
+          ) : (
+            <article
+              className={`compc-feature${i % 2 === 1 ? ' compc-feature--flip' : ''}`}
+              id={ev.id}
+              key={ev.title}
+            >
+              {ev.video !== undefined ? (
+                <VideoEmbed url={ev.video} title={ev.title} />
+              ) : (
+                <Photo
+                  src={ev.image}
+                  alt={ev.imageAlt}
+                  prefix="compc"
+                  onClick={() => openLightbox([{ src: ev.image, caption: ev.title }], 0)}
+                />
+              )}
+              <div className="compc-feature-body">
+                <p className="compc-feature-time">{ev.time}</p>
+                <h3>{ev.title}</h3>
+                {ev.prizeLines ? (
+                  <div className="compc-prize">
+                    <p>Prizes:</p>
+                    {ev.prizeLines.map(line => <p key={line}>{line}</p>)}
+                  </div>
+                ) : (
+                  <p className="compc-prize">Prize: {ev.prize}</p>
+                )}
+                <p className="compc-desc">{ev.desc}</p>
+                <ol className="compc-rules">
+                  {ev.rules.map(rule => <li key={rule}>{rule}</li>)}
+                </ol>
+                {ev.showPrepVideos && (
+                  <>
+                    <p className="compc-videos-label">Prepare with these how-to videos:</p>
+                    <ul className="compc-videos">
+                      {PREP_VIDEOS.map(v => (
+                        <li key={v.url}>
+                          <a href={v.url} target="_blank" rel="noopener noreferrer">{v.title}</a>
+                          <span className="compc-video-tag">{v.tag}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
+            </article>
+          )
+        )}
       </section>
 
       {/* Side contests */}
       <section className="comp-section">
         <h2 className="comp-heading">More Contests &amp; Prizes</h2>
         <div className="comp-contest-grid">
-          {SIDE_CONTESTS.map(c => (
+          {SIDE_CONTESTS.map((c, idx) => (
             <div className="comp-contest-card" key={c.title}>
               <Photo
                 src={c.image}
                 alt={c.imageAlt}
                 prefix="comp"
-                onClick={() => setLightbox({ src: c.image, caption: c.title })}
+                onClick={() => openLightbox(CONTEST_IMAGES, idx)}
               />
               <h3>{c.title}</h3>
               {c.prize && <p className="comp-contest-prize">{c.prize}</p>}
@@ -231,13 +379,13 @@ export default function Competition() {
         <h2 className="comp-heading">Interactive Activities &amp; Stations</h2>
         <p className="comp-section-sub">Explore these all day between competitions.</p>
         <div className="comp-activity-grid">
-          {ACTIVITIES.map(a => (
+          {ACTIVITIES.map((a, idx) => (
             <div className="comp-activity" key={a.title}>
               <Photo
                 src={a.image}
                 alt={a.imageAlt}
                 prefix="compc"
-                onClick={() => setLightbox({ src: a.image, caption: a.title })}
+                onClick={() => openLightbox(ACTIVITY_IMAGES, idx)}
               />
               <h3>{a.title}</h3>
               <p>{a.desc}</p>
@@ -253,13 +401,13 @@ export default function Competition() {
           <h2 className="comp-shop-heading">Event Shop</h2>
           <p className="comp-shop-sub">Take home your own gear - for sale during the event.</p>
           <div className="comp-shop-grid">
-            {SALE_ITEMS.map(item => (
+            {SALE_ITEMS.map((item, idx) => (
               <div className="comp-shop-card" key={item.title}>
                 <Photo
                   src={item.image}
                   alt={item.imageAlt}
                   prefix="compc"
-                  onClick={() => setLightbox({ src: item.image, caption: item.title })}
+                  onClick={() => openLightbox(SHOP_IMAGES, idx)}
                 />
                 <h3>{item.title}</h3>
                 <p>{item.desc}</p>
@@ -289,14 +437,24 @@ export default function Competition() {
 
       {/* Enlarged image lightbox */}
       {lightbox && (
-        <div className="lightbox" onClick={() => setLightbox(null)}>
+        <div className="lightbox" onClick={closeLightbox}>
           <div className="lightbox-inner" onClick={e => e.stopPropagation()}>
-            <button className="lightbox-close" onClick={() => setLightbox(null)} aria-label="Close">
+            <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">
               <CloseIcon />
             </button>
-            <img src={lightbox.src} alt={lightbox.caption} />
+            {lightbox.images.length > 1 && (
+              <button className="lightbox-arrow lightbox-arrow--prev" onClick={showPrevPhoto} aria-label="Previous photo">
+                <ArrowIcon direction="left" />
+              </button>
+            )}
+            <img src={lightbox.images[lightbox.index].src} alt={lightbox.images[lightbox.index].caption} />
+            {lightbox.images.length > 1 && (
+              <button className="lightbox-arrow lightbox-arrow--next" onClick={showNextPhoto} aria-label="Next photo">
+                <ArrowIcon direction="right" />
+              </button>
+            )}
             <div className="lightbox-meta">
-              <span className="lightbox-caption">{lightbox.caption}</span>
+              <span className="lightbox-caption">{lightbox.images[lightbox.index].caption}</span>
             </div>
           </div>
         </div>
@@ -384,6 +542,17 @@ function CloseIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+    </svg>
+  )
+}
+
+function ArrowIcon({ direction }: { direction: 'left' | 'right' }) {
+  const path = direction === 'left'
+    ? 'M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z'
+    : 'M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z'
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d={path} />
     </svg>
   )
 }
