@@ -126,6 +126,9 @@ export interface MainEvent {
   title: string
   time: string
   prize: string
+  // Optional per-place breakdown (e.g. '1st Place: ...'). When set, this
+  // renders instead of the single-line `prize` field.
+  prizeLines?: string[]
   desc: string
   rules: string[]
   image: string
@@ -154,6 +157,11 @@ export const MAIN_EVENTS: MainEvent[] = [
     title: 'Midwest Open Lockpicking Competition',
     time: '5:30 PM - 7:00 PM',
     prize: 'Engraved PacLock for 1st, 2nd, & 3rd place',
+    prizeLines: [
+      '1st Place: Engraved PACLOCK padlock, Fantasm Industries Phantom case',
+      '2nd Place: Engraved PACLOCK padlock, Fantasm Industries EDC pouch',
+      '3rd Place: Engraved PACLOCK padlock, Fantasm Industries EDC pouch',
+    ],
     desc: 'Three elimination rounds to crown the 2026 Midwest Open Lockpicking Champion.',
     rules: MIDWEST_OPEN_RULES,
     image: '',
