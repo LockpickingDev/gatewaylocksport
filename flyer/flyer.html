@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>2026 Midwest Open Flyer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  @page { size: 8.5in 11in; margin: 0; }
+  :root {
+    --bg: #0F0E0C;
+    --panel: #1A1814;
+    --yellow: #ffb81c;
+    --white: #f5f2ea;
+    --muted: #b8b2a3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #444; }
+  body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    color: var(--white);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page {
+    width: 8.5in;
+    height: 11in;
+    margin: 0 auto;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    padding: 0.35in 0.45in 0.3in;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  @media print {
+    html, body { background: none; }
+    .page { margin: 0; }
+  }
+
+  /* faint padlock watermark */
+  .watermark {
+    position: absolute;
+    right: -1.1in;
+    top: 0.9in;
+    width: 5.6in;
+    opacity: 0.045;
+    pointer-events: none;
+  }
+
+  /* HEADER */
+  .presenter {
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: 0.32em;
+    font-size: 15px;
+    color: var(--yellow);
+    text-transform: uppercase;
+  }
+  .presenter span { color: var(--white); }
+  h1 {
+    font-family: 'Anton', Impact, sans-serif;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 0.92;
+    font-size: 126px;
+    letter-spacing: 0.005em;
+    margin-top: -4px;
+  }
+  h1 .l1 { display: block; color: var(--white); }
+  h1 .l2 { display: block; color: var(--yellow); font-size: 108px; }
+
+  /* DATE BAR */
+  .datebar {
+    background: var(--yellow);
+    color: #111;
+    text-align: center;
+    padding: 12px 16px 11px;
+    border-radius: 6px;
+  }
+  .datebar .when {
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: 34px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.05;
+  }
+  .datebar .where {
+    font-weight: 700;
+    font-size: 15px;
+    margin-top: 3px;
+  }
+
+  /* FREE CHIPS */
+  .chips {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .chip {
+    border: 2px solid var(--yellow);
+    border-radius: 6px;
+    text-align: center;
+    padding: 8px 4px 7px;
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: 19px;
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .chip small {
+    display: block;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    color: var(--yellow);
+    margin-bottom: 2px;
+  }
+  .welcome {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-top: -4px;
+  }
+  .welcome b { color: var(--white); }
+
+  /* SCHEDULE */
+  .sched-title {
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .sched-title::after { content: ""; flex: 1; height: 2px; background: #3a352b; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 138px 1fr;
+    gap: 14px;
+    padding: 7px 0;
+    border-bottom: 1px solid #2b2822;
+  }
+  .row .time {
+    font-weight: 800;
+    font-size: 13.5px;
+    color: var(--yellow);
+    line-height: 1.3;
+  }
+  .row .what h3 {
+    font-size: 14.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 3px;
+  }
+  .row .what p, .row .what li {
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .row .what ul {
+    list-style: none;
+    columns: 2;
+    column-gap: 18px;
+  }
+  .row .what li { padding-left: 12px; position: relative; break-inside: avoid; }
+  .row .what li::before {
+    content: "";
+    position: absolute; left: 0; top: 6px;
+    width: 5px; height: 5px; background: var(--yellow); border-radius: 50%;
+  }
+
+  /* FINALE */
+  .finale {
+    margin-top: 2px;
+    background: var(--yellow);
+    color: #111;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1.55in;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 18px;
+  }
+  .finale .tag {
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .finale .name {
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    text-transform: uppercase;
+    margin: 4px 0 6px;
+  }
+  .finale .time {
+    font-weight: 800;
+    font-size: 16px;
+  }
+  .finale .qr { text-align: center; }
+  .finale .qr img {
+    width: 1.3in; height: 1.3in;
+    background: #fff;
+    border-radius: 6px;
+    padding: 4px;
+    display: block;
+    margin: 0 auto;
+  }
+  .finale .qr span {
+    display: block;
+    margin-top: 4px;
+    font-weight: 800;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* SPONSORS */
+  .sponsors {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+  }
+  .sponsors .label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .sponsors img { height: 58px; width: auto; display: block; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- decorative padlock -->
+  <svg class="watermark" viewBox="0 0 100 130" fill="#ffb81c" aria-hidden="true">
+    <path d="M50 4C30 4 18 18 18 38v14H8v74h84V52H82V38C82 18 70 4 50 4zm0 14c11 0 18 8 18 20v14H32V38c0-12 7-20 18-20zm0 58a9 9 0 0 1 5 16.5V108H45V92.5A9 9 0 0 1 50 76z"/>
+  </svg>
+
+  <div class="presenter">2026 Lockpickers United <span>Midwest Open</span></div>
+
+  <h1><span class="l1">Lockpicking</span><span class="l2">Competition</span></h1>
+
+  <div class="datebar">
+    <div class="when">Saturday, November 14th &middot; 12 PM - 7 PM</div>
+    <div class="where">The Babylon &middot; 4744 Mid Rivers Mall Dr, St. Peters, MO 63376</div>
+  </div>
+
+  <div class="chips">
+    <div class="chip"><small>ENTRY</small>Free to attend</div>
+    <div class="chip"><small>COMPETE</small>Free to compete</div>
+    <div class="chip"><small>GEAR</small>Tools supplied<span style="display: block; font-size: 10px; margin-top: 4px;">Or bring your own picks</span></div>
+    <div class="chip"><small>SKILL</small>No experience needed</div>
+  </div>
+  <div class="welcome"><b>Kids welcomed.</b> <b>Spectators welcomed.</b> Come learn, watch, or win.</div>
+
+  <div class="sched-title">Schedule</div>
+
+  <div>
+    <div class="row">
+      <div class="time">12:00 - 3:30 PM</div>
+      <div class="what">
+        <h3>Hangout &amp; Free Roam</h3>
+        <ul>
+          <li>Door raffle ticket &amp; swag bags</li>
+          <li>Under the Door Tool competition starts</li>
+          <li>Learn and practice lockpicking</li>
+          <li>Locktopus timed trials. Padlocks hooked to a Raspberry Pi (competition practice)</li>
+          <li>Practice door with swappable locks</li>
+          <li>Handcuff table: pick and shim cuffs</li>
+          <li>Escape station: break out of zip ties</li>
+          <li>Cutaway &amp; gutted locks</li>
+          <li>Locks from around the world</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">3:30 PM</div>
+      <div class="what">
+        <h3>Break &amp; Winners</h3>
+        <p>Door raffle winners announced (multiple winners).</p>
+        <p>Under the Door Tool Competition winner announced.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">4:00 - 5:30 PM</div>
+      <div class="what">
+        <h3>Spy Escape Competition</h3>
+        <p>Escape the handcuffs, pick a padlock, and foam dart a gong before your opponent.</p>
+        <p>Open picking continues all afternoon.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="finale">
+    <div>
+      <div class="tag">The main event</div>
+      <div class="name">Midwest Open<br>Lockpicking Competition</div>
+      <div class="time">5:30 - 7:00 PM</div>
+    </div>
+    <div class="qr">
+      <img src="qr.png" alt="QR code">
+      <span>Scan for details</span>
+    </div>
+  </div>
+
+  <div class="sponsors">
+    <span class="label">Sponsored by</span>
+    <img src="paclock.png" alt="Paclock">
+    <img src="covert.png" alt="Covert Instruments">
+  </div>
+
+</div>
+</body>
+</html>
