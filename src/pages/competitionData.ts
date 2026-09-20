@@ -12,7 +12,7 @@ export const EVENT = {
   isoStart: '2026-11-14T12:00:00-06:00',
   isoEnd: '2026-11-14T19:00:00-06:00',
   venueName: 'The Babylon',
-  venueAddress: '4744 Mid Rivers Mall Dr, St. Peters, MO',
+  venueAddress: '4744 Mid Rivers Mall Dr, St. Peters, MO 63376',
   mapsUrl: 'https://maps.google.com/?q=The+Babylon,+4744+Mid+Rivers+Mall+Dr,+St.+Peters,+MO',
   meetupUrl: 'https://www.meetup.com/gateway-locksport/events/315638644/',
   facebookUrl: 'https://www.facebook.com/share/1FaWKQXPMY/',

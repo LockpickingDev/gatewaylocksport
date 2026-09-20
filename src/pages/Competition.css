@@ -935,6 +935,11 @@ a.compc-sched-row:hover .compc-sched-more {
     grid-template-columns: 1fr;
   }
 
+  .comp-sponsor-logo {
+    height: auto;
+    aspect-ratio: 646 / 242;
+  }
+
   .compc-feature,
   .compc-feature--flip {
     grid-template-columns: 1fr;
