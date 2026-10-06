@@ -28,10 +28,10 @@
     background: #fff;
     position: relative;
     overflow: hidden;
-    padding: 0.32in 0.5in 0.28in;
+    padding: 0.3in 0.5in 0.26in;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 7px;
   }
   @media print {
     html, body { background: none; }
@@ -62,21 +62,33 @@
     color: var(--muted);
   }
   .hosted img { height: 26px; width: auto; display: block; }
+
+  .eyebrow {
+    text-align: center;
+    font-family: 'Anton', Impact, sans-serif;
+    font-weight: 400;
+    font-size: 32px;
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+    margin-top: 2px;
+    line-height: 1;
+  }
+
   h1 {
     font-family: 'Anton', Impact, sans-serif;
     font-weight: 400;
     text-align: center;
     text-transform: uppercase;
     line-height: 0.92;
-    font-size: 116px;
-    margin-top: -4px;
+    font-size: 104px;
+    margin-top: 0;
     color: var(--ink);
   }
   h1 .l1 { display: block; }
   h1 .l2 {
     display: block;
-    font-size: 100px;
-    margin: 6px auto 0;
+    font-size: 90px;
+    margin: 4px auto 0;
     width: fit-content;
     padding: 0 14px;
     position: relative;
@@ -266,6 +278,8 @@
     <b>Gateway Locksport</b>
   </div>
 
+  <div class="eyebrow">Free All-Day Hangout +</div>
+
   <h1><span class="l1">Lockpicking</span><span class="l2">Competition</span></h1>
 
   <div class="datebar">
@@ -279,7 +293,7 @@
     <div class="chip"><small>GEAR</small>Tools supplied<span style="display: block; font-size: 10px; margin-top: 4px;">Or bring your own picks</span></div>
     <div class="chip"><small>SKILL</small>No experience needed</div>
   </div>
-  <div class="welcome"><b>Kids welcomed.</b> <b>Spectators welcomed.</b> Come learn, watch, or win.</div>
+  <div class="welcome"><b>Stop by anytime between 12 and 7.</b> Stay an hour or the whole day &mdash; kids and spectators welcomed.</div>
 
   <div class="sched-title">Schedule</div>
 
@@ -321,13 +335,13 @@
 
   <div class="finale">
     <div>
-      <div class="tag">The main event</div>
+      <div class="tag">5:30 PM finale</div>
       <div class="name">Midwest Open<br>Lockpicking Competition</div>
       <div class="time">5:30 - 7:00 PM</div>
     </div>
     <div class="qr">
-      <img src="qr.png" alt="QR code">
-      <span>Scan for details</span>
+      <img src="qr-meetup.png" alt="Meetup QR code">
+      <span>RSVP on Meetup</span>
     </div>
   </div>
 
