@@ -59,7 +59,7 @@ const EVENT_SCHEMA = {
     name: 'Gateway Locksport',
     url: 'https://gatewaylocksport.com',
   },
-  description: EVENT.tagline,
+  description: EVENT.tagline.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
 }
 
 type LightboxImage = { src: string; caption: string }
@@ -112,7 +112,7 @@ export default function Competition() {
             {EVENT.venueName}, {EVENT.venueAddress}
           </a>
         </div>
-        <p className="comp-hero-tagline">{EVENT.tagline}</p>
+        <p className="comp-hero-tagline" dangerouslySetInnerHTML={{ __html: EVENT.tagline }} />
         <div className="comp-cta-row">
           <a className="comp-cta comp-cta--meetup" href={EVENT.meetupUrl} target="_blank" rel="noopener noreferrer">
             RSVP on Meetup

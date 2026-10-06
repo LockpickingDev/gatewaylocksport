@@ -28,10 +28,10 @@
     background: #fff;
     position: relative;
     overflow: hidden;
-    padding: 0.4in 0.5in 0.3in;
+    padding: 0.32in 0.5in 0.28in;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
   @media print {
     html, body { background: none; }
@@ -47,20 +47,35 @@
     text-transform: uppercase;
     color: var(--muted);
   }
+  .hosted {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: -4px;
+  }
+  .hosted span, .hosted b {
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hosted img { height: 26px; width: auto; display: block; }
   h1 {
     font-family: 'Anton', Impact, sans-serif;
     font-weight: 400;
     text-align: center;
     text-transform: uppercase;
     line-height: 0.92;
-    font-size: 126px;
+    font-size: 116px;
     margin-top: -4px;
     color: var(--ink);
   }
   h1 .l1 { display: block; }
   h1 .l2 {
     display: block;
-    font-size: 108px;
+    font-size: 100px;
     margin: 6px auto 0;
     width: fit-content;
     padding: 0 14px;
@@ -147,7 +162,7 @@
     display: grid;
     grid-template-columns: 138px 1fr;
     gap: 14px;
-    padding: 7px 0;
+    padding: 5px 0;
     border-bottom: 1px solid #bbb;
   }
   .row .time {
@@ -245,6 +260,11 @@
 <div class="page">
 
   <div class="presenter">2026 Lockpickers United Midwest Open</div>
+  <div class="hosted">
+    <span>Hosted by</span>
+    <img src="logo.png" alt="">
+    <b>Gateway Locksport</b>
+  </div>
 
   <h1><span class="l1">Lockpicking</span><span class="l2">Competition</span></h1>
 
@@ -255,7 +275,7 @@
 
   <div class="chips">
     <div class="chip"><small>ENTRY</small>Free to attend</div>
-    <div class="chip"><small>COMPETE</small>Free to compete</div>
+    <div class="chip"><small>COMPETITION</small>Free to compete</div>
     <div class="chip"><small>GEAR</small>Tools supplied<span style="display: block; font-size: 10px; margin-top: 4px;">Or bring your own picks</span></div>
     <div class="chip"><small>SKILL</small>No experience needed</div>
   </div>
