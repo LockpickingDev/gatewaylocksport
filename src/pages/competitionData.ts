@@ -4,9 +4,7 @@
 export const EVENT = {
   name: '2026 LPU Midwest Open Lockpicking Competition',
   tagline:
-    "Whether you're brand new to lockpicking, an experienced locksporter, or just curious, come join us for a full day of learning, friendly competition, and hands-on fun. Free to attend. Free to compete. No experience required. Spectators are welcome!",
-  intro:
-    'Lockpicks and practice locks will be provided. Feel free to bring your own tools if you prefer. Be part of the first Midwest Open Lockpicking Competition and help establish what we hope becomes an annual Midwest tradition.',
+    "Come hang out, pick locks, learn something new, meet other locksport enthusiasts, and enjoy a full day of hands-on activities!  The day will start with several hours of casual lockpicking, training, interactive physical security displays, and plenty of time to socialize before the competition begins later in the afternoon.<br /><br /><b>You don't have to compete to attend!</b>  Whether you're brand new to lockpicking, an experienced locksporter, or just curious about the hobby, you're welcome to come hang out and enjoy the event.  Lockpicks and locks will be provided or bring your own tools if you prefer.  Picks and training sets will be available for purchase.",
   dateLabel: 'Saturday, November 14, 2026',
   timeLabel: '12:00 PM - 7:00 PM',
   isoStart: '2026-11-14T12:00:00-06:00',

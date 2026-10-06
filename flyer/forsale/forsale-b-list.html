@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>For Sale Sheet (B - List)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  @page { size: 8.5in 11in; margin: 0; }
+  :root { --ink: #111; --muted: #4a4640; --yellow: #ffb81c; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #ddd; }
+  body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    color: var(--ink);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page {
+    width: 8.5in; height: 11in;
+    margin: 0 auto;
+    background: #fff;
+    overflow: hidden;
+    padding: 0.4in 0.5in 0.3in;
+    display: flex; flex-direction: column;
+  }
+  @media print { html, body { background: none; } .page { margin: 0; } }
+
+  /* HEADER */
+  .head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    border-bottom: 5px solid var(--ink);
+    padding-bottom: 8px;
+  }
+  h1 {
+    font-family: 'Anton', Impact, sans-serif; font-weight: 400;
+    text-transform: uppercase; line-height: 0.95; font-size: 96px;
+    position: relative; isolation: isolate; padding: 0 16px 0 0;
+  }
+  h1::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 14%; bottom: 4%;
+    background: var(--yellow); z-index: -1;
+  }
+  h1 span { padding-left: 14px; }
+  .brand { display: flex; align-items: center; gap: 12px; padding-bottom: 2px; }
+  .brand .logo { height: 54px; width: auto; display: block; }
+  .head .who { text-align: right; }
+  .head .who b {
+    display: block; font-family: 'Anton', Impact, sans-serif; font-weight: 400;
+    font-size: 26px; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .head .who span {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* ROWS */
+  .list { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .row {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.6in 1fr 1.25in;
+    gap: 18px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 2px solid var(--ink);
+    min-height: 0;
+  }
+  .row img {
+    width: 1.6in; height: 1.6in; object-fit: contain; border-radius: 4px;
+    display: block;
+  }
+  .row h2 {
+    font-family: 'Anton', Impact, sans-serif; font-weight: 400;
+    text-transform: uppercase; font-size: 25px; line-height: 1.05;
+    letter-spacing: 0.02em;
+  }
+  .row h2 small {
+    display: block; font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.18em; color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .items {
+    list-style: none; font-size: 12px; line-height: 1.4; font-weight: 500;
+    color: var(--muted); columns: 2; column-gap: 16px; margin-top: 5px;
+  }
+  .items li { padding-left: 11px; position: relative; break-inside: avoid; }
+  .items li::before {
+    content: ""; position: absolute; left: 0; top: 6px;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--yellow); border: 1px solid var(--ink);
+  }
+  .colors { font-size: 12px; font-weight: 700; margin-top: 4px; }
+  .colors span { color: var(--muted); font-weight: 500; }
+  .note { font-size: 12px; font-weight: 500; color: var(--muted); margin-top: 5px; }
+
+  .blank { display: inline-block; width: 0.6in; border-bottom: 3px solid var(--ink); margin-left: 4px; }
+  .price {
+    justify-self: end;
+    border: 4px solid var(--ink);
+    border-radius: 8px;
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: 40px; line-height: 1;
+    padding: 10px 16px 8px;
+    text-align: center;
+    background: #fff;
+    box-shadow: inset 0 -8px 0 #0071CD;
+    min-width: 1.25in;
+    white-space: nowrap;
+  }
+
+  .foot {
+    text-align: center; font-size: 13px; font-weight: 800;
+    letter-spacing: 0.08em; text-transform: uppercase; padding-top: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="head">
+    <h1><span>For Sale</span></h1>
+    <div class="brand">
+      <div class="who">
+        <b>Gateway Locksport</b>
+        <span>Locks, picks, &amp; training tools</span>
+      </div>
+      <img class="logo" src="logo.png" alt="Gateway Locksport logo">
+    </div>
+  </div>
+
+  <div class="list">
+
+    <div class="row">
+      <img src="training-kit.jpeg" alt="Locksport Training Kit">
+      <div>
+        <h2>Locksport Training Kit</h2>
+        <ul class="items">
+          <li>6 pin practice lock</li>
+          <li>Schlage pinning kit</li>
+          <li>Pinning tray</li>
+          <li>Plug holder</li>
+          <li>Follower</li>
+          <li>Extra keys</li>
+          <li>Hex wrench</li>
+        </ul>
+        <div class="colors">Colors available: <span>Green, Red, Blue, Orange</span></div>
+      </div>
+      <div class="price">$40</div>
+    </div>
+
+    <div class="row">
+      <img src="fng-kit.jpeg" alt="Covert Instruments FNG Kit">
+      <div>
+        <h2><small>COVERT INSTRUMENTS</small>FNG Kit</h2>
+        <ul class="items">
+          <li>Short flat hook</li>
+          <li>Quint rake</li>
+          <li>0.040" turning tool</li>
+          <li>Clear acrylic practice lock</li>
+        </ul>
+      </div>
+      <div class="price">$15</div>
+    </div>
+
+    <div class="row">
+      <img src="genesis-set.jpeg" alt="Covert Instruments Genesis Set">
+      <div>
+        <h2><small>COVERT INSTRUMENTS</small>Genesis Set</h2>
+        <ul class="items">
+          <li>Short hook</li>
+          <li>Medium hook</li>
+          <li>Quad rake</li>
+          <li>Quint rake</li>
+          <li>0.030" turning tool</li>
+          <li>0.040" turning tool</li>
+          <li>0.050" turning tool</li>
+        </ul>
+      </div>
+      <div class="price">$30</div>
+    </div>
+
+    <div class="row">
+      <img src="jimy-basics.jpeg" alt="Jimy Longs Basics Set">
+      <div>
+        <h2><small>JIMY LONGS</small>Basics Set V5 0.019”</h2>
+        <ul class="items">
+          <li>Short Flat Hook</li>
+          <li>Medium Round Hook</li>
+          <li>Triple Peak Cycloid Rake</li>
+          <li>0.030" turning tool</li>
+          <li>0.040" turning tool</li>
+          <li>0.050" turning tool</li>
+        </ul>
+      </div>
+      <div class="price">$25</div>
+    </div>
+
+    <div class="row" style="border-bottom:0">
+      <img src="jimy-intermediate.jpeg" alt="Jimy Longs Intermediate Set">
+      <div>
+        <h2><small>JIMY LONGS</small>Intermediate Set V5 0.019”</h2>
+        <ul class="items">
+          <li>Low Flat Hook</li>
+          <li>Low Round Hook</li>
+          <li>Short Round Hook</li>
+          <li>Medium Flat Hook</li>
+          <li>Triple Peak Cycloid Rake</li>
+          <li>0.030" flat turning tool</li>
+          <li>0.040" flat turning tool</li>
+          <li>0.050" flat turning tool</li>
+        </ul>
+      </div>
+      <div class="price">$35</div>
+    </div>
+
+  </div>
+
+  <div class="foot">Pay with cash or Venmo</div>
+</div>
+</body>
+</html>
