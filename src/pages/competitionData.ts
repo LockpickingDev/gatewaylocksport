@@ -1,4 +1,4 @@
-// Shared content for the 2026 Midwest Open Lockpicking Competition page.
+﻿// Shared content for the 2026 Midwest Open Lockpicking Competition page.
 // Two layout variants (Competition.tsx / CompetitionAlt.tsx) render this same data.
 
 export const EVENT = {
@@ -144,8 +144,8 @@ export const MAIN_EVENTS: MainEvent[] = [
     time: '4:00 PM - 5:30 PM',
     prize: 'Engraved handcuffs for 1st & 2nd place',
     prizeLines: [
-      '1st Place: Engraved hancuffs, Hardback copy of "Throw Away the Key" by Jason M. Hough',
-      '2nd Place: Engraved hancuffs'
+      '1st Place: Engraved handcuffs, Hardback copy of "Throw Away the Key" by Jason M. Hough',
+      '2nd Place: Engraved handcuffs'
     ],
     desc: 'One of the most exciting events of the day and always a crowd favorite! This is a bracket head-to-head style competition. Everyone can still pick and practice at the tables while this is taking place.',
     rules: SPY_ESCAPE_RULES,
