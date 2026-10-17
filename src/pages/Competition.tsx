@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import SEO from '../components/SEO'
 import type { ScheduleIcon } from './competitionData'
@@ -14,6 +14,7 @@ import {
   BRING_LOCKS,
   SPONSORS,
   SALE_ITEMS,
+  MIDWEST_PRIZES,
 } from './competitionData'
 import './Competition.css'
 
@@ -22,14 +23,25 @@ const MIDWEST_PRIZE_PHOTOS: { src: string; alt: string }[] = [
   { src: '/competition/CompetitionPaclocks1st.JPG', alt: 'Competition Paclock 1st Place' },
   { src: '/competition/CompetitionPaclocks2nd.JPG', alt: 'Competition Paclock 2nd Place' },
   { src: '/competition/CompetitionPaclocks3rd.JPG', alt: 'Competition Paclock 3rd Place' },
+  // Set src once the Covert Instruments gift card photo is ready; empty renders a placeholder.
+  { src: '', alt: 'Covert Instruments Gift Cards' },
   { src: '/competition/CompetitionFantasm1st (1).JPG', alt: 'Competition Fantasm 1st Place (1)' },
   { src: '/competition/CompetitionFantasm1st (2).JPG', alt: 'Competition Fantasm 1st Place (2)' },
   { src: '/competition/CompetitionFantasm1st (3).JPG', alt: 'Competition Fantasm 1st Place (3)' },
   { src: '/competition/CompetitionFantasm1st (4).JPG', alt: 'Competition Fantasm 1st Place (4)' },
   { src: '/competition/CompetitionFantasm2nd3rd.JPG', alt: 'Competition Fantasm 2nd Place & 3rd Place' },
+  { src: '/competition/Throw Away the Key books.jfif', alt: 'Throw Away the Key Books' },
+  { src: '/competition/4th place bank tube.jpg', alt: 'Competition 4th Place Bank Tube' },
 ]
 
-const PRIZE_PHOTO_IMAGES = MIDWEST_PRIZE_PHOTOS.map(p => ({ src: p.src, caption: p.alt }))
+const SPY_PRIZE_PHOTOS: { src: string; alt: string }[] = [
+  { src: '/competition/Spy Escape 1st place handcuffs.jpg', alt: 'Spy Escape 1st Place Handcuffs' },
+  { src: '/competition/Spy Escape 2nd place handcuffs.jpg', alt: 'Spy Escape 2nd Place Handcuffs' },
+  { src: '/competition/Throw Away the Key books.jfif', alt: 'Throw Away the Key Books' },
+]
+
+const PRIZE_PHOTO_IMAGES = MIDWEST_PRIZE_PHOTOS.filter(p => p.src).map(p => ({ src: p.src, caption: p.alt }))
+const SPY_PRIZE_IMAGES = SPY_PRIZE_PHOTOS.map(p => ({ src: p.src, caption: p.alt }))
 const CONTEST_IMAGES = SIDE_CONTESTS.map(c => ({ src: c.image, caption: c.title }))
 const ACTIVITY_IMAGES = ACTIVITIES.map(a => ({ src: a.image, caption: a.title }))
 const SHOP_IMAGES = SALE_ITEMS.map(item => ({ src: item.image, caption: item.title }))
@@ -88,7 +100,7 @@ export default function Competition() {
   return (
     <div className="comp">
       <SEO
-        title="2026 LPU Midwest Open Lockpicking Competition"
+        title="2026 LPU Midwest Open Hangout & Lockpicking Competition"
         description="A full day of lockpicking, learning, and friendly competition in St. Peters, MO. Free to attend, free to compete, no experience required."
         canonical="/competition"
       />
@@ -105,9 +117,9 @@ export default function Competition() {
         </h1>
         <div className="comp-hero-meta">
           <span className="comp-hero-date">{EVENT.dateLabel}</span>
-          <span className="comp-hero-dot">·</span>
+          <span className="comp-hero-dot">Â·</span>
           <span>{EVENT.timeLabel}</span>
-          <span className="comp-hero-dot">·</span>
+          <span className="comp-hero-dot">Â·</span>
           <a href={EVENT.mapsUrl} target="_blank" rel="noopener noreferrer">
             {EVENT.venueName}, {EVENT.venueAddress}
           </a>
@@ -210,7 +222,15 @@ export default function Competition() {
               <div className="compc-spy-details">
                 <div className="compc-spy-desc">
                   <div className="compc-spy-prize-photo">
-                    <Photo src="" alt="Spy Escape Competition prizes" prefix="compc" />
+                    {SPY_PRIZE_PHOTOS.map((photo, idx) => (
+                      <Photo
+                        key={photo.src}
+                        src={photo.src}
+                        alt={photo.alt}
+                        prefix="compc"
+                        onClick={() => openLightbox(SPY_PRIZE_IMAGES, idx)}
+                      />
+                    ))}
                   </div>
                   {ev.prizeLines ? (
                     <div className="compc-prize">
@@ -218,7 +238,7 @@ export default function Competition() {
                       {ev.prizeLines.map(line => <p key={line}>{line}</p>)}
                     </div>
                   ) : (
-                    <p className="compc-prize">Prize: {ev.prize}</p>
+                    <p className="compc-prize">Prizes: {ev.prize}</p>
                   )}
                   <p className="compc-desc">{ev.desc}</p>
                   <ol className="compc-rules">
@@ -262,26 +282,40 @@ export default function Competition() {
               </div>
 
               <div className="compc-midwest-photo-grid">
-                {MIDWEST_PRIZE_PHOTOS.map((photo, idx) => (
+                {MIDWEST_PRIZE_PHOTOS.map(photo => (
                   <Photo
-                    key={photo.src}
+                    key={photo.alt}
                     src={photo.src}
                     alt={photo.alt}
                     prefix="compc"
-                    onClick={() => openLightbox(PRIZE_PHOTO_IMAGES, idx)}
+                    onClick={() =>
+                      openLightbox(PRIZE_PHOTO_IMAGES, PRIZE_PHOTO_IMAGES.findIndex(img => img.src === photo.src))
+                    }
                   />
                 ))}
               </div>
 
               <div className="compc-midwest-body">
-                {ev.prizeLines ? (
-                  <div className="compc-prize">
-                    <p>Prizes:</p>
-                    {ev.prizeLines.map(line => <p key={line}>{line}</p>)}
+                <div className="cprz">
+                  <h4 className="cprz-heading">Prizes</h4>
+                  <div className="cprz-shared">
+                    <span className="cprz-shared-label">{MIDWEST_PRIZES.shared.label}</span>
+                    <ul>
+                      {MIDWEST_PRIZES.shared.items.map(item => <li key={item}>{item}</li>)}
+                    </ul>
                   </div>
-                ) : (
-                  <p className="compc-prize">Prize: {ev.prize}</p>
-                )}
+                  <div className="cprz-podium">
+                    {MIDWEST_PRIZES.places.map(p => (
+                      <div className={`cprz-card cprz-card--${p.place}`} key={p.place}>
+                        <span className="cprz-place">{p.place}</span>
+                        <ul>
+                          {p.items.map(item => <li key={item}>{item}</li>)}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="cprz-credit">{MIDWEST_PRIZES.credit}</p>
+                </div>
                 <p className="compc-desc">{ev.desc}</p>
               </div>
 

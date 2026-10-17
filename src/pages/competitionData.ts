@@ -2,7 +2,7 @@
 // Two layout variants (Competition.tsx / CompetitionAlt.tsx) render this same data.
 
 export const EVENT = {
-  name: '2026 LPU Midwest Open Lockpicking Competition',
+  name: '2026 LPU Midwest Open Hangout & Lockpicking Competition',
   tagline:
     "Come hang out, pick locks, learn something new, meet other locksport enthusiasts, and enjoy a full day of hands-on activities!  The day will start with several hours of casual lockpicking, training, interactive physical security displays, and plenty of time to socialize before the competition begins later in the afternoon.<br /><br /><b>You don't have to compete to attend!</b>  Whether you're brand new to lockpicking, an experienced locksporter, or just curious about the hobby, you're welcome to come hang out and enjoy the event.  Lockpicks and locks will be provided or bring your own tools if you prefer.  Picks and training sets will be available for purchase.",
   dateLabel: 'Saturday, November 14, 2026',
@@ -143,6 +143,10 @@ export const MAIN_EVENTS: MainEvent[] = [
     title: 'Spy Escape Competition',
     time: '4:00 PM - 5:30 PM',
     prize: 'Engraved handcuffs for 1st & 2nd place',
+    prizeLines: [
+      '1st Place: Engraved hancuffs, Hardback copy of "Throw Away the Key" by Jason M. Hough',
+      '2nd Place: Engraved hancuffs'
+    ],
     desc: 'One of the most exciting events of the day and always a crowd favorite! This is a bracket head-to-head style competition. Everyone can still pick and practice at the tables while this is taking place.',
     rules: SPY_ESCAPE_RULES,
     image: '',
@@ -155,17 +159,27 @@ export const MAIN_EVENTS: MainEvent[] = [
     title: 'Midwest Open Lockpicking Competition',
     time: '5:30 PM - 7:00 PM',
     prize: 'Engraved PacLock for 1st, 2nd, & 3rd place',
-    prizeLines: [
-      '1st Place: Engraved PACLOCK padlock, Fantasm Industries Phantom case',
-      '2nd Place: Engraved PACLOCK padlock, Fantasm Industries EDC pouch',
-      '3rd Place: Engraved PACLOCK padlock, Fantasm Industries EDC pouch',
-    ],
     desc: 'Three elimination rounds to crown the 2026 Midwest Open Lockpicking Champion.',
     rules: MIDWEST_OPEN_RULES,
     image: '',
     imageAlt: 'Midwest Open Lockpicking Competition',
   },
 ]
+
+// Structured Midwest Open prizes for the podium-card layout on the competition page.
+export const MIDWEST_PRIZES = {
+  shared: {
+    label: 'Top 3 all receive',
+    items: ['Engraved PACLOCK padlock', '"Throw Away the Key" by Jason M. Hough (softback)'],
+  },
+  places: [
+    { place: '1st', items: ['$75 Covert Instruments gift card', 'Fantasm Industries Phantom case'] },
+    { place: '2nd', items: ['$50 Covert Instruments gift card', 'Fantasm Industries EDC pouch'] },
+    { place: '3rd', items: ['$25 Covert Instruments gift card', 'Fantasm Industries EDC pouch'] },
+    { place: '4th', items: ['A bank tube full of locksport goodies'] },
+  ],
+  credit: 'Prizes provided by PACLOCK, Covert Instruments, and Fantasm Industries',
+}
 
 export interface Contest {
   title: string
