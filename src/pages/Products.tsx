@@ -16,7 +16,7 @@ const PRODUCTS: Product[] = [
     id: '1',
     name: 'Practice Lock Kit',
     description: 'Everything you need to get started with locksport.  Includes a grubbed mortise cylinder for easy repinning, pin kit with spools and serrated security pins, precut keys, pinning tray, plug follower, and plug holder.',
-    price: '$50.00',
+    price: '$40.00',
     imageUrl: '/products/Practice Lock Kit 1916.jpg',
     productUrl: '#'
   },
