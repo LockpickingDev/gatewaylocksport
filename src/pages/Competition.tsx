@@ -18,31 +18,30 @@ import {
 } from './competitionData'
 import './Competition.css'
 
-const MIDWEST_PRIZE_PHOTOS: { src: string; alt: string }[] = [
-  { src: '/competition/CompetitionPaclocks.JPG', alt: 'Competition Paclocks' },
-  { src: '/competition/CompetitionPaclocks1st.JPG', alt: 'Competition Paclock 1st Place' },
-  { src: '/competition/CompetitionPaclocks2nd.JPG', alt: 'Competition Paclock 2nd Place' },
-  { src: '/competition/CompetitionPaclocks3rd.JPG', alt: 'Competition Paclock 3rd Place' },
-  // Set src once the Covert Instruments gift card photo is ready; empty renders a placeholder.
-  { src: '', alt: 'Covert Instruments Gift Cards' },
-  { src: '/competition/CompetitionFantasm1st (1).JPG', alt: 'Competition Fantasm 1st Place (1)' },
-  { src: '/competition/CompetitionFantasm1st (2).JPG', alt: 'Competition Fantasm 1st Place (2)' },
-  { src: '/competition/CompetitionFantasm1st (3).JPG', alt: 'Competition Fantasm 1st Place (3)' },
-  { src: '/competition/CompetitionFantasm1st (4).JPG', alt: 'Competition Fantasm 1st Place (4)' },
-  { src: '/competition/CompetitionFantasm2nd3rd.JPG', alt: 'Competition Fantasm 2nd Place & 3rd Place' },
-  { src: '/competition/Throw Away the Key books.jfif', alt: 'Throw Away the Key Books' },
-  { src: '/competition/4th place bank tube.jpg', alt: 'Competition 4th Place Bank Tube' },
-]
+// Midwest Open prize photo grid is hidden for now; uncomment this, PRIZE_PHOTO_IMAGES,
+// and the grid in the Midwest Open section to re-add it.
+// const MIDWEST_PRIZE_PHOTOS: { src: string; alt: string }[] = [
+//   { src: '/competition/CompetitionFantasm1st (1).JPG', alt: 'Competition Fantasm 1st Place (1)' },
+//   { src: '/competition/CompetitionFantasm1st (2).JPG', alt: 'Competition Fantasm 1st Place (2)' },
+//   { src: '/competition/CompetitionFantasm2nd3rd.JPG', alt: 'Competition Fantasm 2nd Place & 3rd Place' },
+//   { src: '/competition/4th place bank tube.jpg', alt: 'Competition 4th Place Bank Tube' },
+// ]
 
 const SPY_PRIZE_PHOTOS: { src: string; alt: string }[] = [
-  { src: '/competition/Spy Escape 1st place handcuffs.jpg', alt: 'Spy Escape 1st Place Handcuffs' },
+  { src: '/competition/Spy escape 1st.jpg', alt: 'Spy Escape 1st Place Prizes' },
   { src: '/competition/Spy Escape 2nd place handcuffs.jpg', alt: 'Spy Escape 2nd Place Handcuffs' },
-  { src: '/competition/Throw Away the Key books.jfif', alt: 'Throw Away the Key Books' },
 ]
 
-const PRIZE_PHOTO_IMAGES = MIDWEST_PRIZE_PHOTOS.filter(p => p.src).map(p => ({ src: p.src, caption: p.alt }))
+// const PRIZE_PHOTO_IMAGES = MIDWEST_PRIZE_PHOTOS.filter(p => p.src).map(p => ({ src: p.src, caption: p.alt }))
+const PODIUM_IMAGES = MIDWEST_PRIZES.places
+  .filter(p => p.image)
+  .map(p => ({ src: p.image as string, caption: `Midwest Open ${p.place} Place Prizes` }))
 const SPY_PRIZE_IMAGES = SPY_PRIZE_PHOTOS.map(p => ({ src: p.src, caption: p.alt }))
-const CONTEST_IMAGES = SIDE_CONTESTS.map(c => ({ src: c.image, caption: c.title }))
+const CONTEST_IMAGES = SIDE_CONTESTS.flatMap(c => [
+  { src: c.image, caption: c.title },
+  ...(c.inset ? [{ src: c.inset.image, caption: `${c.title} - ${c.inset.label}` }] : []),
+])
+const contestImageIndex = (src: string) => CONTEST_IMAGES.findIndex(img => img.src === src)
 const ACTIVITY_IMAGES = ACTIVITIES.map(a => ({ src: a.image, caption: a.title }))
 const SHOP_IMAGES = SALE_ITEMS.map(item => ({ src: item.image, caption: item.title }))
 
@@ -281,20 +280,6 @@ export default function Competition() {
                 <h3>{ev.title}</h3>
               </div>
 
-              <div className="compc-midwest-photo-grid">
-                {MIDWEST_PRIZE_PHOTOS.map(photo => (
-                  <Photo
-                    key={photo.alt}
-                    src={photo.src}
-                    alt={photo.alt}
-                    prefix="compc"
-                    onClick={() =>
-                      openLightbox(PRIZE_PHOTO_IMAGES, PRIZE_PHOTO_IMAGES.findIndex(img => img.src === photo.src))
-                    }
-                  />
-                ))}
-              </div>
-
               <div className="compc-midwest-body">
                 <div className="cprz">
                   <h4 className="cprz-heading">Prizes</h4>
@@ -307,6 +292,16 @@ export default function Competition() {
                   <div className="cprz-podium">
                     {MIDWEST_PRIZES.places.map(p => (
                       <div className={`cprz-card cprz-card--${p.place}`} key={p.place}>
+                        {p.image && (
+                          <Photo
+                            src={p.image}
+                            alt={`Midwest Open ${p.place} Place Prizes`}
+                            prefix="compc"
+                            onClick={() =>
+                              openLightbox(PODIUM_IMAGES, PODIUM_IMAGES.findIndex(img => img.src === p.image))
+                            }
+                          />
+                        )}
                         <span className="cprz-place">{p.place}</span>
                         <ul>
                           {p.items.map(item => <li key={item}>{item}</li>)}
@@ -316,6 +311,21 @@ export default function Competition() {
                   </div>
                   <p className="cprz-credit">{MIDWEST_PRIZES.credit}</p>
                 </div>
+                {/* Hidden for now; uncomment along with MIDWEST_PRIZE_PHOTOS / PRIZE_PHOTO_IMAGES to re-add.
+                <div className="compc-midwest-photo-grid">
+                  {MIDWEST_PRIZE_PHOTOS.map(photo => (
+                    <Photo
+                      key={photo.alt}
+                      src={photo.src}
+                      alt={photo.alt}
+                      prefix="compc"
+                      onClick={() =>
+                        openLightbox(PRIZE_PHOTO_IMAGES, PRIZE_PHOTO_IMAGES.findIndex(img => img.src === photo.src))
+                      }
+                    />
+                  ))}
+                </div>
+                */}
                 <p className="compc-desc">{ev.desc}</p>
               </div>
 
@@ -390,14 +400,27 @@ export default function Competition() {
       <section className="comp-section">
         <h2 className="comp-heading">More Contests &amp; Prizes</h2>
         <div className="comp-contest-grid">
-          {SIDE_CONTESTS.map((c, idx) => (
+          {SIDE_CONTESTS.map(c => (
             <div className="comp-contest-card" key={c.title}>
-              <Photo
-                src={c.image}
-                alt={c.imageAlt}
-                prefix="comp"
-                onClick={() => openLightbox(CONTEST_IMAGES, idx)}
-              />
+              <div className="comp-contest-media">
+                <Photo
+                  src={c.image}
+                  alt={c.imageAlt}
+                  prefix="comp"
+                  onClick={() => openLightbox(CONTEST_IMAGES, contestImageIndex(c.image))}
+                />
+                {c.inset && (
+                  <button
+                    type="button"
+                    className="comp-contest-inset"
+                    onClick={() => openLightbox(CONTEST_IMAGES, contestImageIndex(c.inset!.image))}
+                    aria-label={`View photo: ${c.inset.alt}`}
+                  >
+                    <img src={c.inset.image} alt={c.inset.alt} loading="lazy" />
+                    <span>{c.inset.label}</span>
+                  </button>
+                )}
+              </div>
               <h3>{c.title}</h3>
               {c.prize && <p className="comp-contest-prize">{c.prize}</p>}
               <ul>
