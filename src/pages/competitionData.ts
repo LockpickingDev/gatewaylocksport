@@ -144,7 +144,7 @@ export const MAIN_EVENTS: MainEvent[] = [
     time: '4:00 PM - 5:30 PM',
     prize: 'Engraved handcuffs for 1st & 2nd place',
     prizeLines: [
-      '1st Place: Engraved handcuffs, Hardback copy of "Throw Away the Key" by Jason M. Hough',
+      '1st Place: Engraved handcuffs, book "Throw Away the Key" by Jason M. Hough',
       '2nd Place: Engraved handcuffs'
     ],
     desc: 'One of the most exciting events of the day and always a crowd favorite! This is a bracket head-to-head style competition. Everyone can still pick and practice at the tables while this is taking place.',
@@ -167,15 +167,20 @@ export const MAIN_EVENTS: MainEvent[] = [
 ]
 
 // Structured Midwest Open prizes for the podium-card layout on the competition page.
-export const MIDWEST_PRIZES = {
+// Optional image renders at the top of that place's card.
+export const MIDWEST_PRIZES: {
+  shared: { label: string; items: string[] }
+  places: { place: string; items: string[]; image?: string }[]
+  credit: string
+} = {
   shared: {
     label: 'Top 3 all receive',
     items: ['Engraved PACLOCK padlock', '"Throw Away the Key" by Jason M. Hough (softback)'],
   },
   places: [
-    { place: '1st', items: ['$75 Covert Instruments gift card', 'Fantasm Industries Phantom case'] },
-    { place: '2nd', items: ['$50 Covert Instruments gift card', 'Fantasm Industries EDC pouch'] },
-    { place: '3rd', items: ['$25 Covert Instruments gift card', 'Fantasm Industries EDC pouch'] },
+    { place: '1st', items: ['$75 Covert Instruments gift card', 'Fantasm Industries Phantom case'], image: '/competition/MO 1st.jpg' },
+    { place: '2nd', items: ['$50 Covert Instruments gift card', 'Fantasm Industries EDC pouch'], image: '/competition/MO 2nd.jpg' },
+    { place: '3rd', items: ['$25 Covert Instruments gift card', 'Fantasm Industries EDC pouch'], image: '/competition/MO 3rd.jpg' },
     { place: '4th', items: ['A bank tube full of locksport goodies'] },
   ],
   credit: 'Prizes provided by PACLOCK, Covert Instruments, and Fantasm Industries',
@@ -187,6 +192,9 @@ export interface Contest {
   details: string[]
   image: string
   imageAlt: string
+  // Optional second photo shown as a small labeled inset in the corner of the main photo,
+  // so cards stay the same height as cards with a single photo.
+  inset?: { image: string; alt: string; label: string }
 }
 
 export const SIDE_CONTESTS: Contest[] = [
@@ -199,6 +207,7 @@ export const SIDE_CONTESTS: Contest[] = [
     ],
     image: '/competition/Half door.jfif',
     imageAlt: 'Under the door tool station',
+    inset: { image: '/competition/UDT Winner.jpg', alt: 'Under the Door Tool Competition winner', label: 'Winner' },
   },
   {
     title: 'Door Raffle',
